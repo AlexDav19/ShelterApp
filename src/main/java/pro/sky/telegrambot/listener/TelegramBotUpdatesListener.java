@@ -46,6 +46,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 telegramBot.execute(telegramBotService.callVolunteer(update));
             }
 
+            if (update.message().text().equals("/addVolunteer")) {
+                telegramBot.execute(telegramBotService.addVolunteer(update));
+            }
+
+
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
