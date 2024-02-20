@@ -54,6 +54,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 telegramBot.execute(telegramBotService.getSchedule(update));
             }
 
+            if (update.message().text().contains("/leaveContactDetails")) {
+                telegramBot.execute(telegramBotService.saveCustomerDetails(update));
+            }
 
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
