@@ -6,17 +6,23 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pro.sky.telegrambot.entity.Customers;
 import pro.sky.telegrambot.entity.Volunteers;
+import pro.sky.telegrambot.repository.CustomersRepository;
 import pro.sky.telegrambot.repository.VolunteersRepository;
 
 import java.io.File;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Service
 public class TelegramBotService {
     @Autowired
     VolunteersRepository volunteersRepository;
+    @Autowired
+    CustomersRepository customersRepository;
     @Autowired
     private TelegramBot telegramBot;
 
@@ -34,6 +40,7 @@ public class TelegramBotService {
 
     /**
      * Отправляет ссылку на пользователя волонтеру. Если у пользователя нет userName, отправляет ссылку на волонтера.
+     *
      * @param update
      * @return SendMessage
      */
@@ -57,6 +64,7 @@ public class TelegramBotService {
 
     /**
      * Добавление волонтера в базу волонтеров.
+     *
      * @param update
      * @return SendMessage
      */
@@ -71,6 +79,7 @@ public class TelegramBotService {
 
     /**
      * Отправка сообщения с информацией о графике и адресе.
+     *
      * @param update
      * @return SendPhoto
      */
@@ -82,5 +91,38 @@ public class TelegramBotService {
                         "Воскресенье - выходной");
         telegramBot.execute(message);
         return new SendPhoto(update.message().chat().id(), new File("src/main/resources/map/Shema.jpg"));
+    }
+
+    /**
+     * Сохранение контактных данных пользователя. Если пользователей с таким именем и телефоном уже существует, ничего не сохраняет.
+     * Формат текстового сообщения "/leaveContactDetails Имя +7-9**-***-**-**".
+     * Пример: "/leaveContactDetails Михаил +7-925-123-45-67".
+     * @param update
+     * @return SendMessage
+     */
+    public SendMessage saveCustomerDetails(Update update) {
+        Pattern pattern = Pattern.compile("(/leaveContactDetails)(.+)(\\+7-9[0-9]{2}-[0-9]{3}-[0-9]{2}-[0-9]{2})(.*)");
+        Matcher matcher = pattern.matcher(update.message().text());
+        if (matcher.matches()) {
+            String name = matcher.group(2).trim();
+            String phoneNumber = matcher.group(3).trim();
+            //try-catch - check DB connection
+            try {
+                //check if such user is saved already
+                if (customersRepository.findByNameAndPhone(name, phoneNumber).isEmpty()) {
+                    customersRepository.save(new Customers(update.message().chat().id(), name, phoneNumber));
+                    return new SendMessage(update.message().chat().id(),
+                            "Ваши данные сохранены. Спасибо!");
+                } else {
+                    return new SendMessage(update.message().chat().id(),
+                            "Пользователь с таким именем и телефоном уже был сохранен ранее. Спасибо!");
+                }
+            } catch (RuntimeException e) {
+                return new SendMessage(update.message().chat().id(), "Ошибка доступа к списку пользователей, попробуйте позже");
+            }
+        } else {
+            return new SendMessage(update.message().chat().id(),
+                    "Ваше сообщение не было распознано. Пожалуйста, проверьте формат и попробуйте еще раз.");
+        }
     }
 }
