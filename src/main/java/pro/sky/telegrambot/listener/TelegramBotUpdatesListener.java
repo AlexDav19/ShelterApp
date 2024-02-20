@@ -50,6 +50,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 telegramBot.execute(telegramBotService.addVolunteer(update));
             }
 
+            if (update.message().text().equals("/getSchedule")) {
+                telegramBot.execute(telegramBotService.getSchedule(update));
+            }
+
 
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;

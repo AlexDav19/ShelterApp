@@ -2,18 +2,16 @@ package pro.sky.telegrambot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.BaseResponse;
-import com.pengrad.telegrambot.response.SendResponse;
+import com.pengrad.telegrambot.request.SendPhoto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.telegrambot.entity.Volunteers;
 import pro.sky.telegrambot.repository.VolunteersRepository;
 
+import java.io.File;
 import java.util.Random;
 
-import static com.pengrad.telegrambot.model.request.ParseMode.HTML;
 
 @Service
 public class TelegramBotService {
@@ -67,7 +65,22 @@ public class TelegramBotService {
             volunteersRepository.save(new Volunteers(update.message().chat().id(), update.message().from().firstName(), update.message().from().username()));
             return new SendMessage(update.message().chat().id(), "Вы добавлены в волонтеры");
         } else {
-            return new SendMessage(update.message().chat().id(), "Чтобы быть волонтером, необходимо иметь userName.");
+            return new SendMessage(update.message().chat().id(), "Чтобы быть волонтером, необходимо добавить userName в Ваш профиль или изменить его на другой.");
         }
+    }
+
+    /**
+     * Отправка сообщения с информацией о графике и адресе.
+     * @param update
+     * @return SendPhoto
+     */
+    public SendPhoto getSchedule(Update update) {
+        SendMessage message = new SendMessage(update.message().chat().id(),
+                "Наш приют находится по адресу:\n" +
+                        "г. Москва, Шоссе Революции д.1\n\n" +
+                        "Часы работы: 09:00 - 18:00\n" +
+                        "Воскресенье - выходной");
+        telegramBot.execute(message);
+        return new SendPhoto(update.message().chat().id(), new File("src/main/resources/map/Shema.jpg"));
     }
 }
