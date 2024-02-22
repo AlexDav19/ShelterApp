@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pro.sky.telegrambot.entity.Customers;
 import pro.sky.telegrambot.entity.Volunteers;
 import pro.sky.telegrambot.repository.CustomersRepository;
+import pro.sky.telegrambot.repository.SheltersRepository;
 import pro.sky.telegrambot.repository.VolunteersRepository;
 
 import java.io.File;
@@ -23,6 +24,8 @@ public class TelegramBotService {
     VolunteersRepository volunteersRepository;
     @Autowired
     CustomersRepository customersRepository;
+    @Autowired
+    SheltersRepository sheltersRepository;
     @Autowired
     private TelegramBot telegramBot;
 
@@ -84,11 +87,11 @@ public class TelegramBotService {
      * @return SendPhoto
      */
     public SendPhoto getSchedule(Update update) {
+        Long shelterId = 1L;
         SendMessage message = new SendMessage(update.message().chat().id(),
                 "Наш приют находится по адресу:\n" +
-                        "г. Москва, Шоссе Революции д.1\n\n" +
-                        "Часы работы: 09:00 - 18:00\n" +
-                        "Воскресенье - выходной");
+                        sheltersRepository.findById(shelterId).get().getAddress() +
+                        "\n" + sheltersRepository.findById(shelterId).get().getWorkingHours());
         telegramBot.execute(message);
         return new SendPhoto(update.message().chat().id(), new File("src/main/resources/map/Shema.jpg"));
     }
@@ -97,6 +100,7 @@ public class TelegramBotService {
      * Сохранение контактных данных пользователя. Если пользователей с таким именем и телефоном уже существует, ничего не сохраняет.
      * Формат текстового сообщения "/leaveContactDetails Имя +7-9**-***-**-**".
      * Пример: "/leaveContactDetails Михаил +7-925-123-45-67".
+     *
      * @param update
      * @return SendMessage
      */
