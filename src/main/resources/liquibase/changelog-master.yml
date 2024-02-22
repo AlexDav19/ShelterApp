@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: liquibase/scripts/volunteers.sql
+  - include:
+      file: liquibase/scripts/shelters.sql
