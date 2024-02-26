@@ -97,6 +97,24 @@ public class TelegramBotService {
     }
 
     /**
+     * Отправка контактных данных охраны для оформления пропуска на машину
+     *
+     * @param update
+     * @return SendPhoto
+     */
+    public SendPhoto getSecurityContactDetails(Update update) {
+        Long shelterId = 1L;
+        SendMessage message = new SendMessage(update.message().chat().id(),
+                            "Телефон охраны для оформления пропуска:\n" +
+                                sheltersRepository.findById(shelterId).get().getPhoneSecurity() + "\n" +
+                                "Адрес приюта:\n" +
+                                sheltersRepository.findById(shelterId).get().getAddress() + "\n" +
+                                sheltersRepository.findById(shelterId).get().getWorkingHours());
+        telegramBot.execute(message);
+        return new SendPhoto(update.message().chat().id(), new File("src/main/resources/map/Shema.jpg"));
+    }
+
+    /**
      * Сохранение контактных данных пользователя. Если пользователей с таким именем и телефоном уже существует, ничего не сохраняет.
      * Формат текстового сообщения "/leaveContactDetails Имя +7-9**-***-**-**".
      * Пример: "/leaveContactDetails Михаил +7-925-123-45-67".
