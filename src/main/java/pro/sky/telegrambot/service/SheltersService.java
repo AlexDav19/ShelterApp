@@ -37,7 +37,13 @@ public class SheltersService {
 
     public Shelters updateShelter(Long id, Shelters shelter) {
         logger.debug("Вызван метод updateShelter");
-        return sheltersRepository.save(shelter);
+        if (sheltersRepository.existsById(id)) {
+            shelter.setId(id);
+            sheltersRepository.save(shelter);
+            return shelter;
+        } else {
+            return null;
+        }
     }
 
     public void deleteShelter(Long shelterId) {

@@ -7,3 +7,8 @@ CREATE TABLE shelters(
     working_hours       varchar,
     driving_directions  varchar
     );
+
+-- changeset mikhail-lukichev:1
+ALTER TABLE shelters
+ADD COLUMN phone_main varchar,
+ADD COLUMN phone_security varchar;
