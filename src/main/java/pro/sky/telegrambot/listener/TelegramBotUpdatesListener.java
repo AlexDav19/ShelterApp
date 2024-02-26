@@ -43,7 +43,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 telegramBot.execute(telegramBotService.menuMessage(update));
             }
 
-            if (update.message().text().equals("/callVolunteer")) {
+            if (update.message().text().equals("/call_volunteer")) {
                 telegramBot.execute(telegramBotService.callVolunteer(update));
             }
 
