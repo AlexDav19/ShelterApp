@@ -33,10 +33,12 @@ public class SheltersController {
                     )
             }, tags = "Приюты")
     @PostMapping
-    public ResponseEntity<Shelters> createStudent(@Parameter(description = "Адрес приюта", example = "г.Москва, ул.Гоголя 32") @RequestParam String address,
+    public ResponseEntity<Shelters> createShelter(@Parameter(description = "Адрес приюта", example = "г.Москва, ул.Гоголя 32") @RequestParam String address,
                                                   @Parameter(description = "График работы", example = "Часы работы: 09:00 - 18:00. Воскресенье - выходной") @RequestParam String workingHours,
-                                                  @Parameter(description = "Название файла схемы проезда", example = "Schema.jpg") @RequestParam String drivingDirections) {
-        Shelters createShelter = sheltersService.createShelter(new Shelters(address, workingHours, "src/main/resources/map/" + drivingDirections));
+                                                  @Parameter(description = "Название файла схемы проезда", example = "Schema.jpg") @RequestParam String drivingDirections,
+                                                  @Parameter(description = "Основной телефон", example = "+7 495  777-77-77") @RequestParam String phoneMain,
+                                                  @Parameter(description = "Телефон охраны", example = "+7 495  777-77-77") @RequestParam String phoneSecurity) {
+        Shelters createShelter = sheltersService.createShelter(new Shelters(address, workingHours, "src/main/resources/map/" + drivingDirections,phoneMain,phoneSecurity));
         return ResponseEntity.ok(createShelter);
     }
 
@@ -56,7 +58,7 @@ public class SheltersController {
                     )
             }, tags = "Приюты")
     @GetMapping("{shelterId}")
-    public ResponseEntity<Shelters> getSheltersByAge(@Parameter(description = "id приюта", example = "1") @PathVariable Long shelterId) {
+    public ResponseEntity<Shelters> getSheltersById(@Parameter(description = "id приюта", example = "1") @PathVariable Long shelterId) {
         Shelters shelter = sheltersService.getShelterById(shelterId);
         if (shelter == null) {
             return ResponseEntity.notFound().build();
@@ -92,11 +94,13 @@ public class SheltersController {
                     )
             }, tags = "Приюты")
     @PutMapping
-    public ResponseEntity<Shelters> updateStudent(@Parameter(description = "id приюта", example = "1") @RequestParam Long shelterId,
+    public ResponseEntity<Shelters> updateShelter(@Parameter(description = "id приюта", example = "1") @RequestParam Long shelterId,
                                                   @Parameter(description = "Адрес приюта", example = "г.Москва, ул.Ленина 12") @RequestParam String address,
                                                   @Parameter(description = "График работы", example = "Часы работы: 10:00 - 18:00. Воскресенье - выходной") @RequestParam String workingHours,
-                                                  @Parameter(description = "Название файла схемы проезда", example = "Schema1.jpg") @RequestParam String drivingDirections) {
-        Shelters shelter = new Shelters(address, workingHours, "src/main/resources/map/" + drivingDirections);
+                                                  @Parameter(description = "Название файла схемы проезда", example = "Schema1.jpg") @RequestParam String drivingDirections,
+                                                  @Parameter(description = "Основной телефон", example = "+7 495  777-77-77") @RequestParam String phoneMain,
+                                                  @Parameter(description = "Телефон охраны", example = "+7 495  777-77-77") @RequestParam String phoneSecurity) {
+        Shelters shelter = new Shelters(address, workingHours, "src/main/resources/map/" + drivingDirections,phoneMain,phoneSecurity);
         Shelters updateShelter = sheltersService.updateShelter(shelterId, shelter);
         if (updateShelter == null) {
             return ResponseEntity.notFound().build();
@@ -114,7 +118,7 @@ public class SheltersController {
                     )
             }, tags = "Приюты")
     @DeleteMapping("{shelterId}")
-    public ResponseEntity<Shelters> deleteStudent(@Parameter(description = "id приюта", example = "1") @PathVariable Long shelterId) {
+    public ResponseEntity<Shelters> deleteShelter(@Parameter(description = "id приюта", example = "1") @PathVariable Long shelterId) {
         sheltersService.deleteShelter(shelterId);
         return ResponseEntity.ok().build();
     }
