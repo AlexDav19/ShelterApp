@@ -30,7 +30,10 @@ public class TelegramBotService {
     private TelegramBot telegramBot;
 
     public SendMessage startMessage(Update update) {
-        String msg = "test";
+        String msg = "Здравствуйте! Вас приветствует бот EasyPetShelter.\n" +
+                    "Я помогу Вам получить всю необходимую информацию о приютах, о том, как взять собачку к себе, как о ней заботиться и как давать отчеты.\n" +
+                    "Также я могу позвать волонтера, если это будет необходимо.\n" +
+                    "Очень рад нашему знакомству!";
         SendMessage message = new SendMessage(update.message().chat().id(), msg);
         return message;
     }
