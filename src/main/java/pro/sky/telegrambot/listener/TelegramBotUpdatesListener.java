@@ -12,6 +12,8 @@ import pro.sky.telegrambot.service.TelegramBotService;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class TelegramBotUpdatesListener implements UpdatesListener {
@@ -61,6 +63,20 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
             if (update.message().text().contains("/leaveContactDetails")) {
                 telegramBot.execute(telegramBotService.saveCustomerDetails(update));
+            }
+
+            //generate list of shelters
+            if (update.message().text().contains("/shelter_info")) {
+                telegramBot.execute(telegramBotService.shelterInfo(update));
+            }
+
+            //shelter info check
+            //check if message starts with /si_ and followed by a number
+            Pattern pattern = Pattern.compile("/si_([0-9]{1,5})\\s(.+)");
+            Matcher matcher = pattern.matcher(update.message().text());
+            if (matcher.matches()) {
+                Long id = Long.valueOf(matcher.group(1));
+                telegramBot.execute(telegramBotService.shelterInfoById(update,id));
             }
 
         });
