@@ -2,15 +2,28 @@ package pro.sky.telegrambot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.request.Keyboard;
+import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pro.sky.telegrambot.entity.Pets;
+import pro.sky.telegrambot.entity.Shelters;
+import pro.sky.telegrambot.repository.PetsRepository;
+
+import java.util.List;
 
 @Service
 public class InfoService {
 
     @Autowired
     private TelegramBot telegramBot;
+
+    @Autowired
+    PetsRepository petsRepository;
+
+
+
     /**
      * Выдача общей информации о приюте.
      *
@@ -47,8 +60,8 @@ public class InfoService {
      * @return SendMessage
      */
     public SendMessage getHowToAdopt(Update update) {
-        String text = "Добрый день! Здесь вы можете получить следующую информацию" +
-                "- Выдать список животных для усыновления.\n" +
+        String text = "Добрый день! Здесь вы можете получить следующую информацию\n" +
+                "/getListPets - Выдать список животных для усыновления.\n" +
                 "/getRulesForMeetingAnimals - Выдать правила знакомства с животным до того, как забрать его из приюта.\n" +
                 "/getRequiredDocuments - Выдать список документов, необходимых для того, чтобы взять животное из приюта.\n" +
                 "/getInfoTransportationOfAnimals - Выдать список рекомендаций по транспортировке животного.\n" +
@@ -62,6 +75,35 @@ public class InfoService {
                 "/leaveContactDetails Имя +7-***-***-**-**\n" +
                 "\n/call_volunteer - Для вызова волонтера";
         return new SendMessage(update.message().chat().id(), text);
+    }
+
+    /**
+     * Бот может выдать список документов, необходимых для того, чтобы взять животное из приюта.
+     *
+     * @param update
+     * @return SendMessage
+     */
+    public SendMessage getListPets(Update update) {
+        //try-catch - Проверка доступа к БД
+        try {
+            String msg = "Для получения информации о питомце, выберите интересующего Вас питомца ниже:";
+            SendMessage message = new SendMessage(update.message().chat().id(), msg);
+
+            //retrieve pets info
+            List<Pets> pets = petsRepository.findAll();
+            //create buttons as array of string arrays
+            String[][] petsButtons = pets.stream()
+                    .map(e -> new String[]{"/pet_" + e.getId() + " " + e.getName()})
+                    .toArray(String[][]::new);
+            //create keyboard
+            Keyboard replyKeyboardMarkup = new ReplyKeyboardMarkup(petsButtons)
+                    .oneTimeKeyboard(true);
+            message.replyMarkup(replyKeyboardMarkup);
+
+            return message;
+        } catch (RuntimeException e) {
+            return new SendMessage(update.message().chat().id(), "Ошибка доступа к списку питомцев, попробуйте позже");
+        }
     }
 
 

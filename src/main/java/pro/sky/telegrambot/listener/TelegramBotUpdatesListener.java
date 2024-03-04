@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.telegrambot.service.InfoService;
+import pro.sky.telegrambot.service.PetsService;
 import pro.sky.telegrambot.service.TelegramBotService;
 
 import javax.annotation.PostConstruct;
@@ -28,6 +29,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private TelegramBotService telegramBotService;
     @Autowired
     InfoService infoService;
+
+    @Autowired
+    PetsService petsService;
 
     @PostConstruct
     public void init() {
@@ -66,6 +70,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
             //Второстепенные разделы
 
+
             if (update.message().text().equals("/addVolunteer")) {
                 telegramBot.execute(telegramBotService.addVolunteer(update));
             }
@@ -83,6 +88,16 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             }
 
             //Разделы Как взять животное из приюта
+
+            if (update.message().text().equals("/getListPets")) {
+                telegramBot.execute(infoService.getListPets(update));
+            }
+            Pattern petsPattern = Pattern.compile("/pet_([0-9]{1,5})\\s(.+)");
+            Matcher PetsMatcher = petsPattern.matcher(update.message().text());
+            if (PetsMatcher.matches()) {
+                Long id = Long.valueOf(PetsMatcher.group(1));
+                telegramBot.execute(petsService.petInfoById(update,id));
+            }
 
             if (update.message().text().equals("/getRulesForMeetingAnimals")) {
                 infoService.getRulesForMeetingAnimals(update);

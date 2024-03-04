@@ -7,8 +7,6 @@ CREATE TABLE pets
     name         varchar,
     breed        varchar,
     age          integer,
-    photo_data   bytea,
-    photo_type   varchar,
-    photo_size   bigserial
+    photo        varchar
 );
 
