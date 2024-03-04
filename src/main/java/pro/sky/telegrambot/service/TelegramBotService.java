@@ -218,4 +218,16 @@ public class TelegramBotService {
                     "Ваше сообщение не было распознано. Пожалуйста, проверьте формат и попробуйте еще раз.");
         }
     }
+
+    /**
+     * Выдает общие рекомендации о технике безопасности на территории приюта
+     *
+     * @param update
+     * @return SendMessage
+     */
+    public SendMessage shelterSafetyRules(Update update) {
+        String msg = "Будьте осторожны на территории приюта. Следуйте указаниям волонтеров. Не заходите в служебные помещения. Не трогайте собак без разрешения, это может быть опасно.";
+        SendMessage message = new SendMessage(update.message().chat().id(), msg);
+        return message;
+    }
 }
