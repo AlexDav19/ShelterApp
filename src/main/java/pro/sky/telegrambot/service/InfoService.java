@@ -40,7 +40,29 @@ public class InfoService {
         telegramBot.execute(message);
     }
 
-
+    /**
+     * Раздел "Как взять животное из приюта".
+     *
+     * @param update
+     * @return SendMessage
+     */
+    public SendMessage getHowToAdopt(Update update) {
+        String text = "Добрый день! Здесь вы можете получить следующую информацию" +
+                "- Выдать список животных для усыновления.\n" +
+                "/getRulesForMeetingAnimals - Выдать правила знакомства с животным до того, как забрать его из приюта.\n" +
+                "/getRequiredDocuments - Выдать список документов, необходимых для того, чтобы взять животное из приюта.\n" +
+                "/getInfoTransportationOfAnimals - Выдать список рекомендаций по транспортировке животного.\n" +
+                "/getMakingHomeForSmallAnimal - Выдать список рекомендаций по обустройству дома для щенка.\n" +
+                "/getMakingHomeForAdultAnimal - Выдать список рекомендаций по обустройству дома для взрослого животного.\n" +
+                "/getInfoForAnimalWithDisabilities - Выдать список рекомендаций по обустройству дома для животного с ограниченными возможностями (зрение, передвижение).\n" +
+                "/getTipsForFirstCommunication - Выдать советы кинолога по первичному общению с собакой.\n" +
+                "/getTipsForFurtherCommunication - Выдать рекомендации по проверенным кинологам для дальнейшего обращения к ним.\n" +
+                "/getReasonsForRefusal - Выдать список причин, почему могут отказать и не дать забрать собаку из приюта.\n" +
+                "\n Чтобы записать Ваши контактные данные для связи отправте сообщение в следующем формате\n" +
+                "/leaveContactDetails Имя +7-***-***-**-**\n" +
+                "\n/call_volunteer - Для вызова волонтера";
+        return new SendMessage(update.message().chat().id(), text);
+    }
 
 
     /**

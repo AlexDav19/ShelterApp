@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pro.sky.telegrambot.service.InfoService;
 import pro.sky.telegrambot.service.TelegramBotService;
 
 import javax.annotation.PostConstruct;
@@ -25,6 +26,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     @Autowired
     private TelegramBotService telegramBotService;
+    @Autowired
+    InfoService infoService;
 
     @PostConstruct
     public void init() {
@@ -35,7 +38,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
-            // Process your updates here
+            // Основные пункты меню
 
             if (update.message().text().equals("/start")) {
                 telegramBot.execute(telegramBotService.startMessage(update));
@@ -45,9 +48,23 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 telegramBot.execute(telegramBotService.menuMessage(update));
             }
 
+//            if (update.message().text().equals("/shelter_info")) {
+//                telegramBot.execute(telegramBotService.(update));
+//            }
+
+            if (update.message().text().equals("/how_to_adopt")) {
+                telegramBot.execute(infoService.getHowToAdopt(update));
+            }
+
+            if (update.message().text().equals("/send_report")) {
+
+            }
+
             if (update.message().text().equals("/call_volunteer")) {
                 telegramBot.execute(telegramBotService.callVolunteer(update));
             }
+
+            //Второстепенные разделы
 
             if (update.message().text().equals("/addVolunteer")) {
                 telegramBot.execute(telegramBotService.addVolunteer(update));
@@ -64,6 +81,45 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             if (update.message().text().contains("/leaveContactDetails")) {
                 telegramBot.execute(telegramBotService.saveCustomerDetails(update));
             }
+
+            //Разделы Как взять животное из приюта
+
+            if (update.message().text().equals("/getRulesForMeetingAnimals")) {
+                infoService.getRulesForMeetingAnimals(update);
+            }
+
+            if (update.message().text().equals("/getRequiredDocuments")) {
+                infoService.getRequiredDocuments(update);
+            }
+
+            if (update.message().text().equals("/getInfoTransportationOfAnimals")) {
+                infoService.getInfoTransportationOfAnimals(update);
+            }
+
+            if (update.message().text().equals("/getMakingHomeForSmallAnimal")) {
+                infoService.getMakingHomeForSmallAnimal(update);
+            }
+
+            if (update.message().text().equals("/getMakingHomeForAdultAnimal")) {
+                infoService.getMakingHomeForAdultAnimal(update);
+            }
+
+            if (update.message().text().equals("/getInfoForAnimalWithDisabilities")) {
+                infoService.getInfoForAnimalWithDisabilities(update);
+            }
+
+            if (update.message().text().equals("/getTipsForFirstCommunication")) {
+                infoService.getTipsForFirstCommunication(update);
+            }
+
+            if (update.message().text().equals("/getTipsForFurtherCommunication")) {
+                infoService.getTipsForFurtherCommunication(update);
+            }
+
+            if (update.message().text().equals("/getReasonsForRefusal")) {
+                infoService.getReasonsForRefusal(update);
+            }
+
 
             //generate list of shelters
             if (update.message().text().contains("/shelter_info")) {
