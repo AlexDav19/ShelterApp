@@ -2,17 +2,22 @@ package pro.sky.telegrambot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.request.Keyboard;
+import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.telegrambot.entity.Customers;
+import pro.sky.telegrambot.entity.Shelters;
 import pro.sky.telegrambot.entity.Volunteers;
 import pro.sky.telegrambot.repository.CustomersRepository;
 import pro.sky.telegrambot.repository.SheltersRepository;
 import pro.sky.telegrambot.repository.VolunteersRepository;
 
 import java.io.File;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,11 +34,17 @@ public class TelegramBotService {
     @Autowired
     private TelegramBot telegramBot;
 
+    /**
+     * Выдает приветственное сообщение.
+     *
+     * @param update
+     * @return SendMessage
+     */
     public SendMessage startMessage(Update update) {
         String msg = "Здравствуйте! Вас приветствует бот EasyPetShelter.\n" +
-                    "Я помогу Вам получить всю необходимую информацию о приютах, о том, как взять собачку к себе, как о ней заботиться и как давать отчеты.\n" +
-                    "Также я могу позвать волонтера, если это будет необходимо.\n" +
-                    "Очень рад нашему знакомству!";
+                "Я помогу Вам получить всю необходимую информацию о приютах, о том, как взять собачку к себе, как о ней заботиться и как давать отчеты.\n" +
+                "Также я могу позвать волонтера, если это будет необходимо.\n" +
+                "Очень рад нашему знакомству!";
         SendMessage message = new SendMessage(update.message().chat().id(), msg);
         return message;
     }
@@ -42,6 +53,63 @@ public class TelegramBotService {
         String msg = "test";
         SendMessage message = new SendMessage(update.message().chat().id(), msg);
         return message;
+    }
+
+    /**
+     * выдает список приютов в виде replyKeyboardMarkup
+     *
+     * @param update
+     * @return SendMessage
+     */
+    public SendMessage shelterInfo(Update update) {
+        //try-catch - Проверка доступа к БД
+        try {
+            String msg = "Для получения информации о приюте, выберите интересующий Вас приют ниже:";
+            SendMessage message = new SendMessage(update.message().chat().id(), msg);
+
+            //retrieve shelters info
+            List<Shelters> shelters = sheltersRepository.findAll();
+            //create buttons as array of string arrays
+            String[][] shelterButtons = shelters.stream()
+                    .map(e -> new String[]{"/si_" + e.getId() + " " + e.getAddress()})
+                    .toArray(String[][]::new);
+            //create keyboard
+            Keyboard replyKeyboardMarkup = new ReplyKeyboardMarkup(shelterButtons)
+                    .oneTimeKeyboard(true);
+            message.replyMarkup(replyKeyboardMarkup);
+
+            return message;
+        } catch (RuntimeException e) {
+            return new SendMessage(update.message().chat().id(), "Ошибка доступа к списку приютов, попробуйте позже");
+        }
+
+    }
+
+    /**
+     * выдает информацию о приюте по id
+     *
+     * @param update
+     * @param id     id приюта в базе данных
+     * @return SendMessage
+     */
+    public SendMessage shelterInfoById(Update update, Long id) {
+        //try-catch - Проверка доступа к БД
+        try {
+            //retrieve the shelter info
+            Optional<Shelters> shelter = sheltersRepository.findById(id);
+
+            String msg = "";
+            if (shelter.isPresent()) {
+                msg = "Адрес: " + shelter.get().getAddress() + "\n"
+                        + "Часы работы: " + shelter.get().getWorkingHours() + "\n"
+                        + "Телефон: " + shelter.get().getPhoneMain();
+            } else {
+                msg = "Приют с идентификатором " + id + " не найден в базе данных.";
+            }
+            return new SendMessage(update.message().chat().id(), msg);
+        } catch (RuntimeException e) {
+            return new SendMessage(update.message().chat().id(), "Ошибка доступа к списку приютов, попробуйте позже");
+        }
     }
 
     /**
@@ -108,11 +176,11 @@ public class TelegramBotService {
     public SendPhoto getSecurityContactDetails(Update update) {
         Long shelterId = 1L;
         SendMessage message = new SendMessage(update.message().chat().id(),
-                            "Телефон охраны для оформления пропуска:\n" +
-                                sheltersRepository.findById(shelterId).get().getPhoneSecurity() + "\n" +
-                                "Адрес приюта:\n" +
-                                sheltersRepository.findById(shelterId).get().getAddress() + "\n" +
-                                sheltersRepository.findById(shelterId).get().getWorkingHours());
+                "Телефон охраны для оформления пропуска:\n" +
+                        sheltersRepository.findById(shelterId).get().getPhoneSecurity() + "\n" +
+                        "Адрес приюта:\n" +
+                        sheltersRepository.findById(shelterId).get().getAddress() + "\n" +
+                        sheltersRepository.findById(shelterId).get().getWorkingHours());
         telegramBot.execute(message);
         return new SendPhoto(update.message().chat().id(), new File("src/main/resources/map/Shema.jpg"));
     }
