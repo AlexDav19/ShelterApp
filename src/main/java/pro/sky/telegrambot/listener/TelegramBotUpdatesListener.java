@@ -79,6 +79,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 telegramBot.execute(telegramBotService.shelterInfoById(update,id));
             }
 
+            if (update.message().text().equals("/shelterSafetyRules")) {
+                telegramBot.execute(telegramBotService.shelterSafetyRules(update));
+            }
+
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
