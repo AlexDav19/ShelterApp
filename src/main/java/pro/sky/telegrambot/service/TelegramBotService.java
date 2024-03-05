@@ -103,6 +103,8 @@ public class TelegramBotService {
                 msg = "Адрес: " + shelter.get().getAddress() + "\n"
                         + "Часы работы: " + shelter.get().getWorkingHours() + "\n"
                         + "Телефон: " + shelter.get().getPhoneMain();
+                SendPhoto schema = new SendPhoto(update.message().chat().id(), new File(shelter.get().getDrivingDirections()));
+                telegramBot.execute(schema);
             } else {
                 msg = "Приют с идентификатором " + id + " не найден в базе данных.";
             }
@@ -164,7 +166,7 @@ public class TelegramBotService {
                         sheltersRepository.findById(shelterId).get().getAddress() +
                         "\n" + sheltersRepository.findById(shelterId).get().getWorkingHours());
         telegramBot.execute(message);
-        return new SendPhoto(update.message().chat().id(), new File("src/main/resources/map/Shema.jpg"));
+        return new SendPhoto(update.message().chat().id(), new File("src/main/resources/map/Schema.jpg"));
     }
 
     /**
@@ -182,7 +184,7 @@ public class TelegramBotService {
                         sheltersRepository.findById(shelterId).get().getAddress() + "\n" +
                         sheltersRepository.findById(shelterId).get().getWorkingHours());
         telegramBot.execute(message);
-        return new SendPhoto(update.message().chat().id(), new File("src/main/resources/map/Shema.jpg"));
+        return new SendPhoto(update.message().chat().id(), new File("src/main/resources/map/Schema.jpg"));
     }
 
     /**
@@ -230,4 +232,5 @@ public class TelegramBotService {
         SendMessage message = new SendMessage(update.message().chat().id(), msg);
         return message;
     }
+
 }
