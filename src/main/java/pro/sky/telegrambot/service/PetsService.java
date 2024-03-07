@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.telegrambot.entity.Pets;
-import pro.sky.telegrambot.entity.Shelters;
 import pro.sky.telegrambot.repository.PetsRepository;
 
 import java.io.File;
