@@ -12,6 +12,7 @@ import pro.sky.telegrambot.entity.Pets;
 import pro.sky.telegrambot.repository.PetsRepository;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -30,9 +31,12 @@ public class PetsService {
     }
 
 
-    public Pets createPets(Pets pet) {
+    public Pets createPets(Pets pet) throws FileNotFoundException {
         logger.debug("Вызван метод createPets");
-        return petsRepository.save(pet);
+        File file = new File(pet.getPhoto());
+        if (file.exists()) {
+            return petsRepository.save(pet);
+        } else throw new FileNotFoundException();
     }
 
     public Pets getPetById(Long petId) {
@@ -45,8 +49,12 @@ public class PetsService {
         return petsRepository.findAll();
     }
 
-    public Pets updatePet(Long id, Pets pet) {
+    public Pets updatePet(Long id, Pets pet) throws FileNotFoundException {
         logger.debug("Вызван метод updatePet");
+        File file = new File(pet.getPhoto());
+        if (!file.exists()) {
+            throw new FileNotFoundException();
+        }
         if (petsRepository.existsById(id)) {
             pet.setId(id);
             petsRepository.save(pet);

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import pro.sky.telegrambot.entity.Shelters;
 import pro.sky.telegrambot.repository.SheltersRepository;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Collection;
 
 @Service
@@ -20,8 +22,12 @@ public class SheltersService {
     }
 
 
-    public Shelters createShelter(Shelters shelter) {
+    public Shelters createShelter(Shelters shelter) throws FileNotFoundException {
         logger.debug("Вызван метод createShelter");
+        File file = new File(shelter.getDrivingDirections());
+        if (!file.exists()) {
+            throw new FileNotFoundException();
+        }
         return sheltersRepository.save(shelter);
     }
 
@@ -35,8 +41,12 @@ public class SheltersService {
         return sheltersRepository.findAll();
     }
 
-    public Shelters updateShelter(Long id, Shelters shelter) {
+    public Shelters updateShelter(Long id, Shelters shelter) throws FileNotFoundException {
         logger.debug("Вызван метод updateShelter");
+        File file = new File(shelter.getDrivingDirections());
+        if (!file.exists()) {
+            throw new FileNotFoundException();
+        }
         if (sheltersRepository.existsById(id)) {
             shelter.setId(id);
             sheltersRepository.save(shelter);

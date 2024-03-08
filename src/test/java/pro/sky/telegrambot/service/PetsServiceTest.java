@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pro.sky.telegrambot.entity.Pets;
 import pro.sky.telegrambot.repository.PetsRepository;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +31,7 @@ public class PetsServiceTest {
     PetsService petsService;
 
     @Test
-    public void createPetsTest_success() {
+    public void createPetsTest_success() throws FileNotFoundException {
         Pets expected = new Pets("TestName", "TestBreed", 1, "Pets1");
         when(petsRepository.save(expected)).thenReturn(expected);
         Pets actual = petsService.createPets(expected);
@@ -59,7 +60,7 @@ public class PetsServiceTest {
     }
 
     @Test
-    public void updatePetsTest_success() {
+    public void updatePetsTest_success() throws FileNotFoundException {
         Pets expected = new Pets("TestName2", "TestBreed2", 2, "Pets2");
         when(petsRepository.save(expected)).thenReturn(expected);
         when(petsRepository.existsById(expected.getId())).thenReturn(true);
@@ -68,7 +69,7 @@ public class PetsServiceTest {
     }
 
     @Test
-    public void updatePetsTest_withNull() {
+    public void updatePetsTest_withNull() throws FileNotFoundException {
         Pets pets = new Pets("TestName2", "TestBreed2", 2, "Pets2");
         Pets actual = petsService.updatePet(pets.getId(), pets);
         Assertions.assertNull(actual);

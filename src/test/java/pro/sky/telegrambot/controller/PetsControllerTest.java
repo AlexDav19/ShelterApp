@@ -63,5 +63,23 @@ public class PetsControllerTest {
         petsRepository.delete(pet);
     }
 
+    @Test
+    public void getPetByIdTest() throws Exception {
+        Long id = 2L;
+        final String name = "TestName";
+        final String breed = "TestBreed";
+        final int age = 1;
+        final String photo = "Pets1";
+
+        Pets pet = new Pets(name, breed, age, "src/main/resources/pets/" + photo);
+
+        ResponseEntity<Pets> expected = ResponseEntity.ok(pet);
+        ResponseEntity<Pets> actual = petsController.createPets(name,breed,age,photo);
+        pet.setId(actual.getBody().getId());
+        org.junit.jupiter.api.Assertions.assertNotNull(actual);
+        org.junit.jupiter.api.Assertions.assertEquals(expected, actual);
+        petsRepository.delete(pet);
+    }
+
 
 }
