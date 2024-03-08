@@ -79,13 +79,15 @@ public class PetsServiceTest {
         Assertions.assertDoesNotThrow(() -> petsService.deletePet(1L));
     }
 
+    //todo Нужно понять как передавать update
     @Test
     public void petInfoById_success() {
 //        Pets pet = new Pets("TestName", "TestBreed", 1, "Pets1");
-//        Update update = new Update();
+        Update update = new Update();
 //        String message1 = "Питомец с идентификатором 1 не найден в базе данных.";
-//        Long id = 1l;
+        Long id = 1l;
 //
+        when(update.message().chat().id()).thenReturn(1L);
 //        SendMessage expected = new SendMessage(1L, message1);
 //        when(petsService.petInfoById(update, 1L)).thenReturn(expected);
 //        when(new SendMessage(Long.class, message1)).thenReturn(expected);
