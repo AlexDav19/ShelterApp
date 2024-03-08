@@ -35,6 +35,8 @@ public class PetsControllerTest {
     @Autowired
     PetsController petsController;
     @Autowired
+    PetsRepository petsRepository;
+    @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
@@ -52,12 +54,13 @@ public class PetsControllerTest {
         final String photo = "Pets1";
 
         Pets pet = new Pets(name, breed, age, "src/main/resources/pets/" + photo);
-        pet.setId(id);
 
         ResponseEntity<Pets> expected = ResponseEntity.ok(pet);
         ResponseEntity<Pets> actual = petsController.createPets(name,breed,age,photo);
+        pet.setId(actual.getBody().getId());
         org.junit.jupiter.api.Assertions.assertNotNull(actual);
         org.junit.jupiter.api.Assertions.assertEquals(expected, actual);
+        petsRepository.delete(pet);
     }
 
 
