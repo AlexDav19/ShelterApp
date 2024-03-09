@@ -90,7 +90,7 @@ public class PetsControllerTest {
     }
 
     @Test
-    public void updateFacultyTest() throws Exception {
+    public void updatePetsTest() throws Exception {
         final String name = "TestName";
         final String breed = "TestBreed";
         final int age = 1;
@@ -98,7 +98,7 @@ public class PetsControllerTest {
         Pets pet = new Pets(name, breed, age, "src/main/resources/pets/" + photo);
         pet.setId(1L);
 
-        String url = "http://localhost:" + port + "/pets232";
+        String url = "http://localhost:" + port + "/pets";
         HttpEntity<Pets> requestEntity = new HttpEntity<>(pet);
         Assertions.assertThat(this.restTemplate.exchange(url, HttpMethod.PUT, requestEntity, Pets.class)).isNotNull();
     }
