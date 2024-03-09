@@ -131,7 +131,7 @@ public class PetsController {
                     )
             }, tags = "Питомец")
     @DeleteMapping("{petId}")
-    public ResponseEntity<Pets> deletePet(@Parameter(description = "id питомца", example = "1") @PathVariable Long petId) {
+        public ResponseEntity<Pets> deletePet(@Parameter(description = "id питомца", example = "1") @PathVariable Long petId) {
         petsService.deletePet(petId);
         return ResponseEntity.ok().build();
     }

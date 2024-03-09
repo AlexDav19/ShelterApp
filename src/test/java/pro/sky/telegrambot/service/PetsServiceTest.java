@@ -1,9 +1,6 @@
 package pro.sky.telegrambot.service;
 
-import com.pengrad.telegrambot.model.Chat;
-import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,10 +29,16 @@ public class PetsServiceTest {
 
     @Test
     public void createPetsTest_success() throws FileNotFoundException {
-        Pets expected = new Pets("TestName", "TestBreed", 1, "Pets1");
+        Pets expected = new Pets("TestName", "TestBreed", 1, "src/main/resources/pets/Pet1.jpg");
         when(petsRepository.save(expected)).thenReturn(expected);
         Pets actual = petsService.createPets(expected);
         Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void createPetsTest_exception() throws FileNotFoundException {
+        Pets pet = new Pets("TestName", "TestBreed", 1, "PetsException");
+        Assertions.assertThrows(FileNotFoundException.class, () -> petsService.createPets(pet));
     }
 
     @Test
@@ -61,7 +64,7 @@ public class PetsServiceTest {
 
     @Test
     public void updatePetsTest_success() throws FileNotFoundException {
-        Pets expected = new Pets("TestName2", "TestBreed2", 2, "Pets2");
+        Pets expected = new Pets("TestName2", "TestBreed2", 2, "src/main/resources/pets/Pet2.jpg");
         when(petsRepository.save(expected)).thenReturn(expected);
         when(petsRepository.existsById(expected.getId())).thenReturn(true);
         Pets actual = petsService.updatePet(expected.getId(), expected);
@@ -69,10 +72,14 @@ public class PetsServiceTest {
     }
 
     @Test
-    public void updatePetsTest_withNull() throws FileNotFoundException {
-        Pets pets = new Pets("TestName2", "TestBreed2", 2, "Pets2");
-        Pets actual = petsService.updatePet(pets.getId(), pets);
-        Assertions.assertNull(actual);
+    public void updatePetsTest_NotFoundPet() throws FileNotFoundException {
+        Pets pet = new Pets("TestName2", "TestBreed2", 2, "src/main/resources/pets/Pet1.jpg");
+        Assertions.assertNull(petsService.updatePet(pet.getId(), pet));
+    }
+    @Test
+    public void updatePetsTest_exception() throws FileNotFoundException {
+        Pets pet = new Pets("TestName2", "TestBreed2", 2, "PetsException");
+        Assertions.assertThrows(FileNotFoundException.class, () -> petsService.updatePet(pet.getId(), pet));
     }
 
     @Test
@@ -84,11 +91,11 @@ public class PetsServiceTest {
     @Test
     public void petInfoById_success() {
 //        Pets pet = new Pets("TestName", "TestBreed", 1, "Pets1");
-        Update update = new Update();
+//        Update update = new Update();
 //        String message1 = "Питомец с идентификатором 1 не найден в базе данных.";
-        Long id = 1l;
+//        Long id = 1l;
 //
-        when(update.message().chat().id()).thenReturn(1L);
+ //       when(update.message().chat().id()).thenReturn(1L);
 //        SendMessage expected = new SendMessage(1L, message1);
 //        when(petsService.petInfoById(update, 1L)).thenReturn(expected);
 //        when(new SendMessage(Long.class, message1)).thenReturn(expected);
