@@ -30,11 +30,10 @@ public class InfoService {
      * @param update
      * @return SendMessage
      */
-    public void getInfoForShelter(Update update) {
+    public SendMessage getInfoForShelter(Update update) {
         String text = "К сожалению, на улицах нашего города находится ещё не мало безнадзорных животных. Мы все с ними сталкивались. У многих есть желание остановиться, помочь, но не у всех есть возможность — и вот тут люди вспоминают, что у нас в городе есть приюты для животных.\n" +
                 "Приют НашПриют - это муниципальный приют для бездомных собак и кошек в Южном округе г. Москвы. В нем живет почти 2500 собак и 150 кошек. Большие и маленькие, пушистые и гладкие, веселые и задумчивые - и на всех одна большая мечта - встретить своего Человека и найти Дом.";
-        SendMessage message = new SendMessage(update.message().chat().id(), text);
-        telegramBot.execute(message);
+        return new SendMessage(update.message().chat().id(), text);
     }
 
     /**
@@ -43,14 +42,13 @@ public class InfoService {
      * @param update
      * @return SendMessage
      */
-    public void getSafetyPrecautions(Update update) {
+    public SendMessage getSafetyPrecautions(Update update) {
         String text = "При первичном посещении Приюта, в целях безопасности, гостю запрещается без сопровождения ответственного рабочего по уходу за животными:\n" +
                 "заходить в вольеры с животными;\n" +
                 "кормить и гладить животных;\n" +
                 "выпускать животных из вольеров;\n" +
                 "выходить с животными за территорию приюта.";
-        SendMessage message = new SendMessage(update.message().chat().id(), text);
-        telegramBot.execute(message);
+        return new SendMessage(update.message().chat().id(), text);
     }
 
     /**
@@ -113,7 +111,7 @@ public class InfoService {
      * @param update
      * @return SendMessage
      */
-    public void getRulesForMeetingAnimals(Update update) {
+    public SendMessage getRulesForMeetingAnimals(Update update) {
         String text = "Правило №1 – Не подходи близко к собаке, находящейся на привязи.\n" +
                 "\n" +
                 "Правило №2 – Не трогай и не гладь чужих собак.\n" +
@@ -143,8 +141,7 @@ public class InfoService {
                 "Правило №14 – Не позволяй собаке кусать тебя за руки.\n" +
                 "\n" +
                 "Правило №15 – Не смотри в глаза нападающей собаке.";
-        SendMessage message = new SendMessage(update.message().chat().id(), text);
-        telegramBot.execute(message);
+        return new SendMessage(update.message().chat().id(), text);
     }
 
     /**
@@ -153,10 +150,9 @@ public class InfoService {
      * @param update
      * @return SendMessage
      */
-    public void getRequiredDocuments(Update update) {
+    public SendMessage getRequiredDocuments(Update update) {
         String text = "В нашей организации при передаче животного оформляется договор с будущим хозяином животного. В нем фиксируются данные обеих сторон, оговариваются пункты ответственного содержания животного. Мы также всегда ненавязчиво отслеживаем судьбу наших бывших подопечных. Всех наших питомцев мы лично провожаем до места их дальнейшего жительства. \n";
-        SendMessage message = new SendMessage(update.message().chat().id(), text);
-        telegramBot.execute(message);
+        return new SendMessage(update.message().chat().id(), text);
     }
 
     /**
@@ -165,13 +161,12 @@ public class InfoService {
      * @param update
      * @return SendMessage
      */
-    public void getInfoTransportationOfAnimals(Update update) {
+    public SendMessage getInfoTransportationOfAnimals(Update update) {
         String text = "днище контейнеров или автомобильных кузовов должно быть прочным, цельным и ровным. На его поверхности не должно быть трещин, отверстий, гвоздей, проволоки или сколов. В противном случае животные могут травмироваться в дороге, или попасться в искусственную «ловушку»;\n" +
                 "днище обычно застилается специальной впитывающей пленкой, сеном или сухостоем;\n" +
                 "железнодорожный контейнер или кузов машины должен защищать животное от дождя и прямых солнечных лучей. Но одновременно с этим он должен обеспечивать свободную циркуляцию свежего воздуха внутри ограниченного пространства;\n" +
                 "автомобильный кузов или контейнер должны быть выполнены из натуральных или нетоксичных материалов, например, прочного металла, досок или пластика.";
-        SendMessage message = new SendMessage(update.message().chat().id(), text);
-        telegramBot.execute(message);
+        return new SendMessage(update.message().chat().id(), text);
     }
 
     /**
@@ -180,11 +175,10 @@ public class InfoService {
      * @param update
      * @return SendMessage
      */
-    public void getMakingHomeForSmallAnimal(Update update) {
+    public SendMessage getMakingHomeForSmallAnimal(Update update) {
         String text = "Сразу стоит озаботиться тем, чтобы у животного было свое место. Вы должны заранее подумать о том, где ему будет комфортно и при этом удобно вам.\n" +
                 "Щенки любопытны и любят исследовать пространство, поэтому еще до прибытия питомца важно убедиться, что ваш дом безопасен для него. ";
-        SendMessage message = new SendMessage(update.message().chat().id(), text);
-        telegramBot.execute(message);
+        return new SendMessage(update.message().chat().id(), text);
     }
 
     /**
@@ -193,11 +187,10 @@ public class InfoService {
      * @param update
      * @return SendMessage
      */
-    public void getMakingHomeForAdultAnimal(Update update) {
+    public SendMessage getMakingHomeForAdultAnimal(Update update) {
         String text = "Сразу стоит озаботиться тем, чтобы у животного было свое место. Вы должны заранее подумать о том, где ему будет комфортно и при этом удобно вам.\n" +
                 " Большой плюс взрослых животных заключается именно в том, что у них уже сформировался характер. Как правило, они более самодостаточные и спокойные, нежели котята и щенки. Взрослое животное — это скорее друг.";
-        SendMessage message = new SendMessage(update.message().chat().id(), text);
-        telegramBot.execute(message);
+        return new SendMessage(update.message().chat().id(), text);
     }
 
     /**
@@ -206,10 +199,9 @@ public class InfoService {
      * @param update
      * @return SendMessage
      */
-    public void getInfoForAnimalWithDisabilities(Update update) {
+    public SendMessage getInfoForAnimalWithDisabilities(Update update) {
         String text = "Нужно понимать ответственность шага, после которого человек будет отвечать не только за свою жизнь, но и за жизнь хвостатого. Если вы не готовы к этому, то, конечно, лучше никого не брать. ";
-        SendMessage message = new SendMessage(update.message().chat().id(), text);
-        telegramBot.execute(message);
+        return new SendMessage(update.message().chat().id(), text);
     }
 
     /**
@@ -218,10 +210,9 @@ public class InfoService {
      * @param update
      * @return SendMessage
      */
-    public void getTipsForFirstCommunication(Update update) {
+    public SendMessage getTipsForFirstCommunication(Update update) {
         String text = "Первые несколько недель животного в новом доме – это адаптация и социализация, поэтому нужно быть готовым к тому, что животное может ходить за вами по пятам, даже в душ. ";
-        SendMessage message = new SendMessage(update.message().chat().id(), text);
-        telegramBot.execute(message);
+        return new SendMessage(update.message().chat().id(), text);
     }
 
     /**
@@ -230,7 +221,7 @@ public class InfoService {
      * @param update
      * @return SendMessage
      */
-    public void getTipsForFurtherCommunication(Update update) {
+    public SendMessage getTipsForFurtherCommunication(Update update) {
         String text = "Что необходимо купить:\n" +
                 "\n" +
                 "миски — от 200 рублей;\n" +
@@ -239,8 +230,7 @@ public class InfoService {
                 "переноску (обязательно пластиковую) — от 1000 рублей;\n" +
                 "шлейку (специалисты утверждают, что использование ошейника и поводка во время прогулки может привести к травмам шеи, позвоночника, гортани, в то время как шлейка распределяет нагрузку более равномерно и, соответственно, является более безопасной) — от 500 рублей;\n" +
                 "корм. Животных можно кормить домашним кормом, главное — готовить для них отдельно, подбирать правильные продукты и знать основные принципы питания собак и кошек (например, животным категорически запрещено есть соленое, жирное, сладкое и так далее). Коммерческий корм бывает сухим и влажным и делится на следующие типы: холистик, суперпремиум, премиум и эконом. Самый сбалансированный вариант — это корма холистик. В них хорошо выдержан баланс белков и клетчатки и практически нет вкусовых добавок. Другим хорошим вариантом является линейка суперпремиум. Корма класса премиум и эконом менее полезны для животных, поскольку содержат меньшее количество питательных элементов. Самое главное — обращать внимание на состав корма.";
-        SendMessage message = new SendMessage(update.message().chat().id(), text);
-        telegramBot.execute(message);
+        return new SendMessage(update.message().chat().id(), text);
     }
 
     /**
@@ -249,9 +239,8 @@ public class InfoService {
      * @param update
      * @return SendMessage
      */
-    public void getReasonsForRefusal(Update update) {
+    public SendMessage getReasonsForRefusal(Update update) {
         String text = "Вам могут отказать, если у вас нет регистрации или собственного жилья. К одиноким пожилым людям и семьям с младенцами в приютах тоже относятся с осторожностью. Иногда сотрудники или волонтеры просят показать квартиру, могут захотеть пообщаться с вашей семьей и соседями.";
-        SendMessage message = new SendMessage(update.message().chat().id(), text);
-        telegramBot.execute(message);
+        return new SendMessage(update.message().chat().id(), text);
     }
 }
