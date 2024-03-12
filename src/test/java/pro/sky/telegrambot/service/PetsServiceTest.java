@@ -1,6 +1,12 @@
 package pro.sky.telegrambot.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.Chat;
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,16 +22,36 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PetsServiceTest {
 
     @Mock
+    Update update;
+    @Mock
+    Message message;
+    @Mock
+    Chat chat;
+    @Mock
+    TelegramBot telegramBot;
+
+    @Mock
     PetsRepository petsRepository;
 
     @InjectMocks
     PetsService petsService;
+
+    public static String getJsonString(Object obj) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+//            LOGGER.error("Error parsing log entry", e);
+            return null;
+        }
+    }
 
     @Test
     public void createPetsTest_success() throws FileNotFoundException {
@@ -51,13 +77,13 @@ public class PetsServiceTest {
 
     @Test
     public void getAllPetsTest_success() {
-        Collection<Pets> expected = new ArrayList<>();
+        List<Pets> expected = new ArrayList<>();
         Pets pet1 = new Pets("TestName1", "TestBreed1", 1, "Pets1");
         Pets pet2 = new Pets("TestName2", "TestBreed2", 2, "Pets2");
         expected.add(pet1);
         expected.add(pet2);
 
-        when(petsRepository.findAll()).thenReturn((List<Pets>) expected);
+        when(petsRepository.findAll()).thenReturn(expected);
         Collection<Pets> actual = petsService.getAllPet();
         Assertions.assertEquals(expected, actual);
     }
@@ -87,25 +113,41 @@ public class PetsServiceTest {
         Assertions.assertDoesNotThrow(() -> petsService.deletePet(1L));
     }
 
-    //todo Нужно понять как передавать update
     @Test
     public void petInfoById_success() {
-//        Pets pet = new Pets("TestName", "TestBreed", 1, "Pets1");
-//        Update update = new Update();
-//        String message1 = "Питомец с идентификатором 1 не найден в базе данных.";
-//        Long id = 1l;
-//
- //       when(update.message().chat().id()).thenReturn(1L);
-//        SendMessage expected = new SendMessage(1L, message1);
-//        when(petsService.petInfoById(update, 1L)).thenReturn(expected);
-//        when(new SendMessage(Long.class, message1)).thenReturn(expected);
-//        //Optional<Pets> pets = petsRepository.findById(pet.getId());
-//        //when(pets.isPresent()).thenReturn(true);
-//        //when(petsRepository.existsById(pet.getId())).thenReturn(true);
-//        //when(petsRepository.findById(pet.getId())).thenReturn(pets);
-//
-//        SendMessage actual = petsService.petInfoById(update, 1L);
-//        Assertions.assertEquals(expected, actual);
+        Pets pet = new Pets("TestName2", "TestBreed2", 2, "src/main/resources/pets/Pet134.jpg");
+        String msg = "Имя: " + pet.getName() + "\n" +
+                "Порода: " + pet.getBreed() + "\n" +
+                "Возраст: " + pet.getAge();
+        Long id = 1L;
+
+        when(petsRepository.findById(id)).thenReturn(Optional.of(pet));
+        when(update.message()).thenReturn(message);
+        when(message.chat()).thenReturn(chat);
+        when(chat.id()).thenReturn(id);
+        when(update.message().chat().id()).thenReturn(id);
+        SendMessage expected = new SendMessage(id, msg);
+
+        //test execution
+        SendMessage actual = petsService.petInfoById(update, id);
+        assertEquals(getJsonString(expected), getJsonString(actual));
+    }
+
+    @Test
+    public void petInfoById_notFind() {
+        String msg = "Питомец с идентификатором 1 не найден в базе данных.";
+        Long id = 1L;
+
+        when(update.message()).thenReturn(message);
+        when(message.chat()).thenReturn(chat);
+        when(chat.id()).thenReturn(id);
+        when(update.message().chat().id()).thenReturn(id);
+
+        SendMessage expected = new SendMessage(id, msg);
+
+        //test execution
+        SendMessage actual = petsService.petInfoById(update, id);
+        assertEquals(getJsonString(expected), getJsonString(actual));
     }
 
     @Test

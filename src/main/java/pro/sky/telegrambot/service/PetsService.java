@@ -6,7 +6,6 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.telegrambot.entity.Pets;
 import pro.sky.telegrambot.repository.PetsRepository;
@@ -21,12 +20,12 @@ public class PetsService {
 
     Logger logger = LoggerFactory.getLogger(PetsService.class);
 
-    @Autowired
-    TelegramBot telegramBot;
+    private final TelegramBot telegramBot;
 
     private final PetsRepository petsRepository;
 
-    public PetsService(PetsRepository petsRepository) {
+    public PetsService(TelegramBot telegramBot, PetsRepository petsRepository) {
+        this.telegramBot = telegramBot;
         this.petsRepository = petsRepository;
     }
 
