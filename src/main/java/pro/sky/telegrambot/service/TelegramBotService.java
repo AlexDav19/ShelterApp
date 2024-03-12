@@ -37,7 +37,6 @@ public class TelegramBotService {
     /**
      * Выдает приветственное сообщение.
      *
-     * @param update
      * @return SendMessage
      */
     public SendMessage startMessage(Update update) {
@@ -45,20 +44,17 @@ public class TelegramBotService {
                 "Я помогу Вам получить всю необходимую информацию о приютах, о том, как взять собачку к себе, как о ней заботиться и как давать отчеты.\n" +
                 "Также я могу позвать волонтера, если это будет необходимо.\n" +
                 "Очень рад нашему знакомству!";
-        SendMessage message = new SendMessage(update.message().chat().id(), msg);
-        return message;
+        return new SendMessage(update.message().chat().id(), msg);
     }
 
     public SendMessage menuMessage(Update update) {
         String msg = "test";
-        SendMessage message = new SendMessage(update.message().chat().id(), msg);
-        return message;
+        return new SendMessage(update.message().chat().id(), msg);
     }
 
     /**
-     * выдает список приютов в виде replyKeyboardMarkup
+     * Выдает список приютов в виде replyKeyboardMarkup
      *
-     * @param update
      * @return SendMessage
      */
     public SendMessage shelterInfo(Update update) {
@@ -86,9 +82,8 @@ public class TelegramBotService {
     }
 
     /**
-     * выдает информацию о приюте по id
+     * Выдает информацию о приюте по id
      *
-     * @param update
      * @param id     id приюта в базе данных
      * @return SendMessage
      */
@@ -117,7 +112,6 @@ public class TelegramBotService {
     /**
      * Отправляет ссылку на пользователя волонтеру. Если у пользователя нет userName, отправляет ссылку на волонтера.
      *
-     * @param update
      * @return SendMessage
      */
     public SendMessage callVolunteer(Update update) {
@@ -141,7 +135,6 @@ public class TelegramBotService {
     /**
      * Добавление волонтера в базу волонтеров.
      *
-     * @param update
      * @return SendMessage
      */
     public SendMessage addVolunteer(Update update) {
@@ -156,7 +149,6 @@ public class TelegramBotService {
     /**
      * Отправка сообщения с информацией о графике и адресе.
      *
-     * @param update
      * @return SendPhoto
      */
     public SendPhoto getSchedule(Update update) {
@@ -172,7 +164,6 @@ public class TelegramBotService {
     /**
      * Отправка контактных данных охраны для оформления пропуска на машину
      *
-     * @param update
      * @return SendPhoto
      */
     public SendPhoto getSecurityContactDetails(Update update) {
@@ -192,7 +183,6 @@ public class TelegramBotService {
      * Формат текстового сообщения "/leaveContactDetails Имя +7-9**-***-**-**".
      * Пример: "/leaveContactDetails Михаил +7-925-123-45-67".
      *
-     * @param update
      * @return SendMessage
      */
     public SendMessage saveCustomerDetails(Update update) {
@@ -224,13 +214,11 @@ public class TelegramBotService {
     /**
      * Выдает общие рекомендации о технике безопасности на территории приюта
      *
-     * @param update
      * @return SendMessage
      */
     public SendMessage shelterSafetyRules(Update update) {
         String msg = "Будьте осторожны на территории приюта. Следуйте указаниям волонтеров. Не заходите в служебные помещения. Не трогайте собак без разрешения, это может быть опасно.";
-        SendMessage message = new SendMessage(update.message().chat().id(), msg);
-        return message;
+        return new SendMessage(update.message().chat().id(), msg);
     }
 
 }

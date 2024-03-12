@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import pro.sky.telegrambot.entity.Shelters;
 import pro.sky.telegrambot.service.SheltersService;
 
+import java.io.FileNotFoundException;
 import java.util.Collection;
 
 @RequestMapping("shelters")
@@ -30,6 +31,12 @@ public class SheltersController {
                             description = "Приют добавлен",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Shelters.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Не найден файл схемы проезда",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Shelters.class))
                     )
             }, tags = "Приюты")
     @PostMapping
@@ -37,7 +44,7 @@ public class SheltersController {
                                                   @Parameter(description = "График работы", example = "Часы работы: 09:00 - 18:00. Воскресенье - выходной") @RequestParam String workingHours,
                                                   @Parameter(description = "Название файла схемы проезда", example = "Schema.jpg") @RequestParam String drivingDirections,
                                                   @Parameter(description = "Основной телефон", example = "+7 495  777-77-77") @RequestParam String phoneMain,
-                                                  @Parameter(description = "Телефон охраны", example = "+7 495  777-77-77") @RequestParam String phoneSecurity) {
+                                                  @Parameter(description = "Телефон охраны", example = "+7 495  777-77-77") @RequestParam String phoneSecurity) throws FileNotFoundException {
         Shelters createShelter = sheltersService.createShelter(new Shelters(address, workingHours, "src/main/resources/map/" + drivingDirections,phoneMain,phoneSecurity));
         return ResponseEntity.ok(createShelter);
     }
@@ -91,6 +98,12 @@ public class SheltersController {
                             description = "Приют изменен",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Shelters.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Не найден файл схемы проезда",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Shelters.class))
                     )
             }, tags = "Приюты")
     @PutMapping
@@ -99,7 +112,7 @@ public class SheltersController {
                                                   @Parameter(description = "График работы", example = "Часы работы: 10:00 - 18:00. Воскресенье - выходной") @RequestParam String workingHours,
                                                   @Parameter(description = "Название файла схемы проезда", example = "Schema1.jpg") @RequestParam String drivingDirections,
                                                   @Parameter(description = "Основной телефон", example = "+7 495  777-77-77") @RequestParam String phoneMain,
-                                                  @Parameter(description = "Телефон охраны", example = "+7 495  777-77-77") @RequestParam String phoneSecurity) {
+                                                  @Parameter(description = "Телефон охраны", example = "+7 495  777-77-77") @RequestParam String phoneSecurity) throws FileNotFoundException {
         Shelters shelter = new Shelters(address, workingHours, "src/main/resources/map/" + drivingDirections,phoneMain,phoneSecurity);
         Shelters updateShelter = sheltersService.updateShelter(shelterId, shelter);
         if (updateShelter == null) {

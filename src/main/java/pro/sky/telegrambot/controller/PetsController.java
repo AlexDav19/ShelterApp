@@ -12,6 +12,7 @@ import pro.sky.telegrambot.entity.Pets;
 import pro.sky.telegrambot.service.PetsService;
 
 
+import java.io.FileNotFoundException;
 import java.util.Collection;
 
 @RequestMapping("pets")
@@ -32,13 +33,19 @@ public class PetsController {
                             description = "Питомец добавлен",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Pets.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Не найден файл с фото питомца",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Pets.class))
                     )
             }, tags = "Питомец")
     @PostMapping
     public ResponseEntity<Pets> createPets(@Parameter(description = "Имя питомца", example = "Шарик") @RequestParam String name,
                                            @Parameter(description = "Порода", example = "Дворняжка") @RequestParam String breed,
                                            @Parameter(description = "Возраст", example = "3") @RequestParam int age,
-                                           @Parameter(description = "Название файла фото питомца", example = "Pet1.jpg") @RequestParam String Photo) {
+                                           @Parameter(description = "Название файла фото питомца", example = "Pet1.jpg") @RequestParam String Photo) throws FileNotFoundException {
         Pets createPets = petsService.createPets(new Pets(name, breed, age, "src/main/resources/pets/" + Photo));
         return ResponseEntity.ok(createPets);
     }
@@ -92,6 +99,12 @@ public class PetsController {
                             description = "Питомец изменен",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Pets.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Не найден файл с фото питомца",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Pets.class))
                     )
             }, tags = "Питомец")
     @PutMapping
@@ -99,7 +112,7 @@ public class PetsController {
                                           @Parameter(description = "Имя питомца", example = "Шарик") @RequestParam String name,
                                           @Parameter(description = "Порода", example = "Дворняжка") @RequestParam String breed,
                                           @Parameter(description = "Возраст", example = "3") @RequestParam int age,
-                                          @Parameter(description = "Название файла фото питомца", example = "Pet1.jpg") @RequestParam String Photo) {
+                                          @Parameter(description = "Название файла фото питомца", example = "Pet1.jpg") @RequestParam String Photo) throws FileNotFoundException {
         Pets pet = new Pets(name, breed, age,"src/main/resources/pets/" + Photo);
         Pets updatePet = petsService.updatePet(petId, pet);
         if (updatePet == null) {
@@ -118,7 +131,7 @@ public class PetsController {
                     )
             }, tags = "Питомец")
     @DeleteMapping("{petId}")
-    public ResponseEntity<Pets> deletePet(@Parameter(description = "id питомца", example = "1") @PathVariable Long petId) {
+        public ResponseEntity<Pets> deletePet(@Parameter(description = "id питомца", example = "1") @PathVariable Long petId) {
         petsService.deletePet(petId);
         return ResponseEntity.ok().build();
     }
