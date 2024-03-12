@@ -52,10 +52,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 telegramBot.execute(telegramBotService.menuMessage(update));
             }
 
-//            if (update.message().text().equals("/shelter_info")) {
-//                telegramBot.execute(telegramBotService.(update));
-//            }
-
             if (update.message().text().equals("/how_to_adopt")) {
                 telegramBot.execute(infoService.getHowToAdopt(update));
             }
@@ -69,7 +65,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             }
 
             //Второстепенные разделы
-
 
             if (update.message().text().equals("/addVolunteer")) {
                 telegramBot.execute(telegramBotService.addVolunteer(update));
@@ -100,7 +95,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             }
 
             if (update.message().text().equals("/getRulesForMeetingAnimals")) {
-                infoService.getRulesForMeetingAnimals(update);
+                telegramBot.execute(infoService.getRulesForMeetingAnimals(update));
             }
 
             if (update.message().text().equals("/getRequiredDocuments")) {
@@ -108,31 +103,31 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             }
 
             if (update.message().text().equals("/getInfoTransportationOfAnimals")) {
-                infoService.getInfoTransportationOfAnimals(update);
+                telegramBot.execute(infoService.getInfoTransportationOfAnimals(update));
             }
 
             if (update.message().text().equals("/getMakingHomeForSmallAnimal")) {
-                infoService.getMakingHomeForSmallAnimal(update);
+                telegramBot.execute(infoService.getMakingHomeForSmallAnimal(update));
             }
 
             if (update.message().text().equals("/getMakingHomeForAdultAnimal")) {
-                infoService.getMakingHomeForAdultAnimal(update);
+                telegramBot.execute(infoService.getMakingHomeForAdultAnimal(update));
             }
 
             if (update.message().text().equals("/getInfoForAnimalWithDisabilities")) {
-                infoService.getInfoForAnimalWithDisabilities(update);
+                telegramBot.execute(infoService.getInfoForAnimalWithDisabilities(update));
             }
 
             if (update.message().text().equals("/getTipsForFirstCommunication")) {
-                infoService.getTipsForFirstCommunication(update);
+                telegramBot.execute(infoService.getTipsForFirstCommunication(update));
             }
 
             if (update.message().text().equals("/getTipsForFurtherCommunication")) {
-                infoService.getTipsForFurtherCommunication(update);
+                telegramBot.execute(infoService.getTipsForFurtherCommunication(update));
             }
 
             if (update.message().text().equals("/getReasonsForRefusal")) {
-                infoService.getReasonsForRefusal(update);
+                telegramBot.execute(infoService.getReasonsForRefusal(update));
             }
 
 
