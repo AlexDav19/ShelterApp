@@ -11,3 +11,20 @@ CREATE TABLE adoptions
     trial_success boolean
 );
 
+-- changeset davletov:1
+ALTER TABLE adoptions RENAME COLUMN adopter_id TO customer_id;
+
+-- changeset davletov:2
+ALTER TABLE adoptions
+ADD CONSTRAINT addiction_customer_id FOREIGN KEY (customer_id)
+REFERENCES customers (id)
+ON DELETE SET NULL
+ON UPDATE Set NULL;
+
+-- changeset davletov:3
+ALTER TABLE adoptions
+ADD CONSTRAINT addiction_pet_id FOREIGN KEY (pet_id)
+REFERENCES pets (id)
+ON DELETE SET NULL
+ON UPDATE Set NULL;
+

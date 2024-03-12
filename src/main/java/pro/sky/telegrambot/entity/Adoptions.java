@@ -12,14 +12,14 @@ public class Adoptions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long adopterId;
+    private Long customerId;
     private Long petId;
     private LocalDateTime trialEnd;
     private LocalDateTime lastReport;
     private boolean trialSuccess;
 
-    public Adoptions(Long adopterId, Long petId, LocalDateTime trialEnd) {
-        this.adopterId = adopterId;
+    public Adoptions(Long customerId, Long petId, LocalDateTime trialEnd) {
+        this.customerId = customerId;
         this.petId = petId;
         this.trialEnd = trialEnd;
     }
@@ -31,8 +31,12 @@ public class Adoptions {
         return id;
     }
 
-    public Long getAdopterId() {
-        return adopterId;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
     }
 
     public Long getPetId() {
@@ -41,6 +45,10 @@ public class Adoptions {
 
     public LocalDateTime getTrialEnd() {
         return trialEnd;
+    }
+
+    public void setTrialEnd(LocalDateTime trialEnd) {
+        this.trialEnd = trialEnd;
     }
 
     public LocalDateTime getLastReport() {
@@ -56,19 +64,19 @@ public class Adoptions {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Adoptions adoptions = (Adoptions) o;
-        return trialSuccess == adoptions.trialSuccess && Objects.equals(id, adoptions.id) && Objects.equals(adopterId, adoptions.adopterId) && Objects.equals(petId, adoptions.petId) && Objects.equals(trialEnd, adoptions.trialEnd) && Objects.equals(lastReport, adoptions.lastReport);
+        return trialSuccess == adoptions.trialSuccess && Objects.equals(id, adoptions.id) && Objects.equals(customerId, adoptions.customerId) && Objects.equals(petId, adoptions.petId) && Objects.equals(trialEnd, adoptions.trialEnd) && Objects.equals(lastReport, adoptions.lastReport);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, adopterId, petId, trialEnd, lastReport, trialSuccess);
+        return Objects.hash(id, customerId, petId, trialEnd, lastReport, trialSuccess);
     }
 
     @Override
     public String toString() {
         return "Adoptions{" +
                 "id=" + id +
-                ", adopterId=" + adopterId +
+                ", adopterId=" + customerId +
                 ", petId=" + petId +
                 ", trialEnd=" + trialEnd +
                 ", lastReport=" + lastReport +
