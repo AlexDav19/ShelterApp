@@ -6,7 +6,6 @@ import com.pengrad.telegrambot.model.request.Keyboard;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.telegrambot.entity.Customers;
 import pro.sky.telegrambot.entity.Shelters;
@@ -25,14 +24,17 @@ import java.util.regex.Pattern;
 
 @Service
 public class TelegramBotService {
-    @Autowired
-    VolunteersRepository volunteersRepository;
-    @Autowired
-    CustomersRepository customersRepository;
-    @Autowired
-    SheltersRepository sheltersRepository;
-    @Autowired
-    private TelegramBot telegramBot;
+    private final VolunteersRepository volunteersRepository;
+    private final CustomersRepository customersRepository;
+    private final SheltersRepository sheltersRepository;
+    private final TelegramBot telegramBot;
+
+    public TelegramBotService(VolunteersRepository volunteersRepository, CustomersRepository customersRepository, SheltersRepository sheltersRepository, TelegramBot telegramBot) {
+        this.volunteersRepository = volunteersRepository;
+        this.customersRepository = customersRepository;
+        this.sheltersRepository = sheltersRepository;
+        this.telegramBot = telegramBot;
+    }
 
     /**
      * Выдает приветственное сообщение.
@@ -84,7 +86,7 @@ public class TelegramBotService {
     /**
      * Выдает информацию о приюте по id
      *
-     * @param id     id приюта в базе данных
+     * @param id id приюта в базе данных
      * @return SendMessage
      */
     public SendMessage shelterInfoById(Update update, Long id) {
@@ -121,15 +123,17 @@ public class TelegramBotService {
             int randomID = random.nextInt(volunteersRepository.findAll().size());
             Long chatIdVolunteer = volunteersRepository.findAll().get(randomID).getChatId();
             if (update.message().from().username() != null) {
-                SendMessage message = new SendMessage(chatIdVolunteer, update.message().from().username());
+                SendMessage message = new SendMessage(chatIdVolunteer,
+                        "Пользователь " + update.message().from().username() + " попросил помощи. Пожалуйста, свяжитесь с ним."
+                );
                 telegramBot.execute(message);
+                return new SendMessage(update.message().chat().id(), "Мы позвали волонтера в помощь, скоро он свяжется с вами.");
             } else {
                 return new SendMessage(update.message().chat().id(), String.format("Мы подобрали для вас волонтера, который вам поможет: %s", volunteersRepository.findAll().get(randomID).getUserName()));
             }
         } catch (RuntimeException e) {
             return new SendMessage(update.message().chat().id(), "Ошибка доступа к списку волонтеров, попробуйте позже");
         }
-        return new SendMessage(update.message().chat().id(), "Мы позвали волонтера в помощь, скоро он свяжется с вами.");
     }
 
     /**
