@@ -55,6 +55,10 @@ public class Adoptions {
         return lastReport;
     }
 
+    public void setLastReport(LocalDateTime lastReport) {
+        this.lastReport = lastReport;
+    }
+
     public boolean isTrialSuccess() {
         return trialSuccess;
     }

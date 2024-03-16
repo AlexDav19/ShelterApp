@@ -4,7 +4,7 @@
 CREATE TABLE adoptions
 (
     id           bigserial primary key,
-    adopter_id   bigserial,
+    customer_id   bigserial,
     pet_id       bigserial,
     trial_end    TIMESTAMP,
     last_report  TIMESTAMP,
@@ -12,16 +12,13 @@ CREATE TABLE adoptions
 );
 
 -- changeset davletov:1
-ALTER TABLE adoptions RENAME COLUMN adopter_id TO customer_id;
-
--- changeset davletov:2
 ALTER TABLE adoptions
 ADD CONSTRAINT addiction_customer_id FOREIGN KEY (customer_id)
 REFERENCES customers (id)
 ON DELETE SET NULL
 ON UPDATE Set NULL;
 
--- changeset davletov:3
+-- changeset davletov:2
 ALTER TABLE adoptions
 ADD CONSTRAINT addiction_pet_id FOREIGN KEY (pet_id)
 REFERENCES pets (id)

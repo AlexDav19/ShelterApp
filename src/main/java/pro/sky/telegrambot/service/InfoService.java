@@ -26,8 +26,6 @@ public class InfoService {
     /**
      * Выдача общей информации о приюте.
      *
-     * @param update
-     * @return SendMessage
      */
     public SendMessage getInfoForShelter(Update update) {
         String text = "К сожалению, на улицах нашего города находится ещё не мало безнадзорных животных. Мы все с ними сталкивались. У многих есть желание остановиться, помочь, но не у всех есть возможность — и вот тут люди вспоминают, что у нас в городе есть приюты для животных.\n" +
@@ -38,8 +36,6 @@ public class InfoService {
     /**
      * Выдача общих рекомендаций о технике безопасности на территории приюта.
      *
-     * @param update
-     * @return SendMessage
      */
     public SendMessage getSafetyPrecautions(Update update) {
         String text = "При первичном посещении Приюта, в целях безопасности, гостю запрещается без сопровождения ответственного рабочего по уходу за животными:\n" +
@@ -53,7 +49,6 @@ public class InfoService {
     /**
      * Раздел "Как взять животное из приюта".
      *
-     * @param update
      * @return SendMessage
      */
     public SendMessage getHowToAdopt(Update update) {
@@ -77,7 +72,6 @@ public class InfoService {
     /**
      * Бот может выдать список документов, необходимых для того, чтобы взять животное из приюта.
      *
-     * @param update
      * @return SendMessage
      */
     public SendMessage getListPets(Update update) {
@@ -107,8 +101,6 @@ public class InfoService {
     /**
      * Бот может выдать правила знакомства с животным до того, как забрать его из приюта.
      *
-     * @param update
-     * @return SendMessage
      */
     public SendMessage getRulesForMeetingAnimals(Update update) {
         String text = "Правило №1 – Не подходи близко к собаке, находящейся на привязи.\n" +
@@ -146,8 +138,6 @@ public class InfoService {
     /**
      * Бот может выдать список документов, необходимых для того, чтобы взять животное из приюта.
      *
-     * @param update
-     * @return SendMessage
      */
     public SendMessage getRequiredDocuments(Update update) {
         String text = "В нашей организации при передаче животного оформляется договор с будущим хозяином животного. В нем фиксируются данные обеих сторон, оговариваются пункты ответственного содержания животного. Мы также всегда ненавязчиво отслеживаем судьбу наших бывших подопечных. Всех наших питомцев мы лично провожаем до места их дальнейшего жительства. \n";
@@ -157,8 +147,6 @@ public class InfoService {
     /**
      * Бот может выдать список рекомендаций по транспортировке животного.
      *
-     * @param update
-     * @return SendMessage
      */
     public SendMessage getInfoTransportationOfAnimals(Update update) {
         String text = "днище контейнеров или автомобильных кузовов должно быть прочным, цельным и ровным. На его поверхности не должно быть трещин, отверстий, гвоздей, проволоки или сколов. В противном случае животные могут травмироваться в дороге, или попасться в искусственную «ловушку»;\n" +
@@ -171,8 +159,6 @@ public class InfoService {
     /**
      * Бот может выдать список рекомендаций по обустройству дома для щенка.
      *
-     * @param update
-     * @return SendMessage
      */
     public SendMessage getMakingHomeForSmallAnimal(Update update) {
         String text = "Сразу стоит озаботиться тем, чтобы у животного было свое место. Вы должны заранее подумать о том, где ему будет комфортно и при этом удобно вам.\n" +
@@ -183,8 +169,6 @@ public class InfoService {
     /**
      *  Бот может выдать список рекомендаций по обустройству дома для взрослого животного.
      *
-     * @param update
-     * @return SendMessage
      */
     public SendMessage getMakingHomeForAdultAnimal(Update update) {
         String text = "Сразу стоит озаботиться тем, чтобы у животного было свое место. Вы должны заранее подумать о том, где ему будет комфортно и при этом удобно вам.\n" +
@@ -195,8 +179,6 @@ public class InfoService {
     /**
      * Бот может выдать список рекомендаций по обустройству дома для животного с ограниченными возможностями (зрение, передвижение).
      *
-     * @param update
-     * @return SendMessage
      */
     public SendMessage getInfoForAnimalWithDisabilities(Update update) {
         String text = "Нужно понимать ответственность шага, после которого человек будет отвечать не только за свою жизнь, но и за жизнь хвостатого. Если вы не готовы к этому, то, конечно, лучше никого не брать. ";
@@ -206,8 +188,6 @@ public class InfoService {
     /**
      * Бот может выдать советы кинолога по первичному общению с собакой.
      *
-     * @param update
-     * @return SendMessage
      */
     public SendMessage getTipsForFirstCommunication(Update update) {
         String text = "Первые несколько недель животного в новом доме – это адаптация и социализация, поэтому нужно быть готовым к тому, что животное может ходить за вами по пятам, даже в душ. ";
@@ -217,8 +197,6 @@ public class InfoService {
     /**
      * Бот может выдать рекомендации по проверенным кинологам для дальнейшего обращения к ним.
      *
-     * @param update
-     * @return SendMessage
      */
     public SendMessage getTipsForFurtherCommunication(Update update) {
         String text = "Что необходимо купить:\n" +
@@ -235,8 +213,6 @@ public class InfoService {
     /**
      * Бот может выдать список причин, почему могут отказать и не дать забрать собаку из приюта.
      *
-     * @param update
-     * @return SendMessage
      */
     public SendMessage getReasonsForRefusal(Update update) {
         String text = "Вам могут отказать, если у вас нет регистрации или собственного жилья. К одиноким пожилым людям и семьям с младенцами в приютах тоже относятся с осторожностью. Иногда сотрудники или волонтеры просят показать квартиру, могут захотеть пообщаться с вашей семьей и соседями.";
