@@ -6,6 +6,7 @@ CREATE TABLE report
     id           bigserial primary key,
     adoption_id  bigserial,
     text         varchar,
-    photo_id     varchar
+    photo_id     varchar,
+    processed    boolean
 );
 
