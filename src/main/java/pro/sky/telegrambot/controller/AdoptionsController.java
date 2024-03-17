@@ -146,9 +146,9 @@ public class AdoptionsController {
                                     schema = @Schema(implementation = Adoptions.class))
                     )
             }, tags = "Усыновитель")
-    @PutMapping("{adoptionId14Days}")
-    public ResponseEntity<Adoptions> trialEndPlus14Days(@Parameter(description = "id усыновителя", example = "1") @PathVariable Long adoptionId14Days) {
-        Adoptions updateAdoption =  adoptionsService.trialEndPlus14Days(adoptionId14Days);
+    @PutMapping("14Days/{adoptionId}")
+    public ResponseEntity<Adoptions> trialEndPlus14Days(@Parameter(description = "id усыновителя", example = "1") @PathVariable Long adoptionId) {
+        Adoptions updateAdoption =  adoptionsService.trialEndPlus14Days(adoptionId);
         if (updateAdoption == null) {
             return ResponseEntity.notFound().build();
         }
@@ -164,9 +164,9 @@ public class AdoptionsController {
                                     schema = @Schema(implementation = Adoptions.class))
                     )
             }, tags = "Усыновитель")
-    @PutMapping("{adoptionId30Days}")
-    public ResponseEntity<Adoptions> trialEndPlus30Days(@Parameter(description = "id усыновителя", example = "1") @PathVariable Long adoptionId30Days) {
-        Adoptions updateAdoption =  adoptionsService.trialEndPlus30Days(adoptionId30Days);
+    @PutMapping("30Days/{adoptionId}")
+    public ResponseEntity<Adoptions> trialEndPlus30Days(@Parameter(description = "id усыновителя", example = "1") @PathVariable Long adoptionId) {
+        Adoptions updateAdoption =  adoptionsService.trialEndPlus30Days(adoptionId);
         if (updateAdoption == null) {
             return ResponseEntity.notFound().build();
         }
@@ -182,9 +182,9 @@ public class AdoptionsController {
                                     schema = @Schema(implementation = Adoptions.class))
                     )
             }, tags = "Усыновитель")
-    @PutMapping("{adoptionIdTrialEndSuccess}")
-    public ResponseEntity<Adoptions> trialEndSuccess(@Parameter(description = "id усыновителя", example = "1") @PathVariable Long adoptionIdTrialEndSuccess) {
-        Adoptions updateAdoption =  adoptionsService.trialEndSuccess(adoptionIdTrialEndSuccess);
+    @PutMapping("TrialEndSuccess/{adoptionId}")
+    public ResponseEntity<Adoptions> trialEndSuccess(@Parameter(description = "id усыновителя", example = "1") @PathVariable Long adoptionId) {
+        Adoptions updateAdoption =  adoptionsService.trialEndSuccess(adoptionId);
         if (updateAdoption == null) {
             return ResponseEntity.notFound().build();
         }
