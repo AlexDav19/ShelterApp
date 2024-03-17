@@ -64,7 +64,7 @@ public class TimeMessage {
                 .collect(Collectors.toList());
         for (Long i = 1L; i < adoptionsStream.size() + 1; i++) {
             Random random = new Random();
-            Long volunteerId = random.nextLong(volunteersRepository.findAll().size());
+            Long volunteerId = (long) random.nextInt(volunteersRepository.findAll().size());
             Long chatId = customersRepository.findById(adoptionsRepository.findById(reportRepository.findById(i).get().getAdoption_id()).get().getCustomerId()).get().getChatId();
             String text = String.format("Пожалуйста, свяжитесь с усыновителем id:%s, chatId:%s.Он не присылал отчет уже 2 дня.", i, chatId);
             telegramBot.execute(new SendMessage(volunteerId, text));
