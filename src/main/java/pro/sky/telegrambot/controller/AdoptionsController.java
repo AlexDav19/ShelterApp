@@ -113,8 +113,10 @@ public class AdoptionsController {
     public ResponseEntity<Adoptions> updateAdoption(@Parameter(description = "Id усыновителя", example = "1") @RequestParam Long adoptionId,
                                                     @Parameter(description = "Id клиента", example = "1") @RequestParam Long customerId,
                                                     @Parameter(description = "Id питомца", example = "1") @RequestParam Long petId,
-                                                    @Parameter(description = "Дата окончания испытательного срока", example = "2024-04-08") @RequestParam LocalDateTime trialEnd)  {
-        Adoptions adoption = new Adoptions(customerId, petId, trialEnd);
+                                                    @Parameter(description = "Дата окончания испытательного срока", example = "2014-04-08 21:00") @RequestParam String trialEnd)  {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(trialEnd, formatter);
+        Adoptions adoption = new Adoptions(customerId, petId, dateTime);
         Adoptions updateAdoption = adoptionsService.updateAdoptions(adoptionId, adoption);
         if (updateAdoption == null) {
             return ResponseEntity.notFound().build();
