@@ -45,7 +45,7 @@ public class ReportService {
 
 
     /**
-     * Сохраняет отчет в базе..
+     * Сохраняет отчет в базе.
      *
      * @return SendMessage
      */
