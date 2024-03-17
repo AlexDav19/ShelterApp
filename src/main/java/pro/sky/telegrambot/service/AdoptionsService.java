@@ -57,6 +57,11 @@ public class AdoptionsService {
         adoptionsRepository.deleteById(adoptionsId);
     }
 
+    /**
+     * Увеличивает дату испытательного срока на 14 дней.
+     *
+     * @return Adoptions
+     */
     public Adoptions trialEndPlus14Days(Long adoptionsId) {
         logger.debug("Вызван метод trialEndPlus14Days");
         Adoptions adoptions = adoptionsRepository.findById(adoptionsId).get();
@@ -66,6 +71,11 @@ public class AdoptionsService {
         return adoptions;
     }
 
+    /**
+     * Увеличивает дату испытательного срока на 30 дней.
+     *
+     * @return Adoptions
+     */
     public Adoptions trialEndPlus30Days(Long adoptionsId) {
         logger.debug("Вызван метод trialEndPlus30Days");
         Adoptions adoptions = adoptionsRepository.findById(adoptionsId).get();
@@ -75,6 +85,11 @@ public class AdoptionsService {
         return adoptions;
     }
 
+    /**
+     * Устанавливает успешное прохождение испытательного срока. trialSuccess = true.
+     *
+     * @return Adoptions
+     */
     public Adoptions trialEndSuccess(Long adoptionsId) {
         logger.debug("Вызван метод trialEndSuccess");
         Adoptions adoptions = adoptionsRepository.findById(adoptionsId).get();
