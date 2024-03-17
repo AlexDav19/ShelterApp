@@ -173,4 +173,22 @@ public class AdoptionsController {
         return ResponseEntity.ok(updateAdoption);
     }
 
+    @Operation(summary = "Испытательный срок пройден успешно",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "trialSuccess = true",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Adoptions.class))
+                    )
+            }, tags = "Усыновитель")
+    @PutMapping("{adoptionIdTrialEndSuccess}")
+    public ResponseEntity<Adoptions> trialEndSuccess(@Parameter(description = "id усыновителя", example = "1") @PathVariable Long adoptionIdTrialEndSuccess) {
+        Adoptions updateAdoption =  adoptionsService.trialEndSuccess(adoptionIdTrialEndSuccess);
+        if (updateAdoption == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updateAdoption);
+    }
+
 }

@@ -63,6 +63,10 @@ public class Adoptions {
         return trialSuccess;
     }
 
+    public void setTrialSuccess(boolean trialSuccess) {
+        this.trialSuccess = trialSuccess;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

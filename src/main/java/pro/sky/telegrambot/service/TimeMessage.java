@@ -37,7 +37,7 @@ public class TimeMessage {
      * Ежедневное напоминание усыновителям об отчете.
      *
      */
-    @Scheduled(cron = "00 00 10 * * *")
+    @Scheduled(cron = "00 00 21 * * *")
     private void reportReminder() {
         List<Long> adoptionsStream = adoptionsRepository.findAll().stream()
                 .map(Adoptions::getId)
@@ -55,7 +55,7 @@ public class TimeMessage {
      * Уведомление волонтера о просроченном отчете усыновителя.
      *
      */
-    @Scheduled(cron = "00 00 10 * * *")
+    @Scheduled(cron = "00 00 21 * * *")
     private void volunteerReportReminder() {
         List<Long> adoptionsStream = adoptionsRepository.findAll().stream()
                 .map(Adoptions::getId)
