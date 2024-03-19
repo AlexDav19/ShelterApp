@@ -49,11 +49,6 @@ public class TelegramBotService {
         return new SendMessage(update.message().chat().id(), msg);
     }
 
-    public SendMessage menuMessage(Update update) {
-        String msg = "test";
-        return new SendMessage(update.message().chat().id(), msg);
-    }
-
     /**
      * Выдает список приютов в виде replyKeyboardMarkup
      *
