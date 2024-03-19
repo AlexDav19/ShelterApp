@@ -27,7 +27,6 @@ public class TelegramBotConfiguration {
 
         //only lowercase letters and underscore are accepted by Telegram for the menu commands!
         listofCommands.add(new BotCommand("/start", "Приветствие"));
-        listofCommands.add(new BotCommand("/help", "Как пользоваться ботом"));
         listofCommands.add(new BotCommand("/shelter_info", "Узнать информацию о приюте"));
         listofCommands.add(new BotCommand("/how_to_adopt", "Как взять животное из приюта"));
         listofCommands.add(new BotCommand("/send_report", "Прислать отчет о питомце"));
