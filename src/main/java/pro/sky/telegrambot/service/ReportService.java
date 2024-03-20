@@ -10,6 +10,10 @@ import com.pengrad.telegrambot.response.GetFileResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pro.sky.telegrambot.entity.Report;
 import pro.sky.telegrambot.repository.AdoptionsRepository;
@@ -21,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -119,6 +124,22 @@ public class ReportService {
         logger.debug("Вызван метод getReportById");
         reportRepository.findById(reportId).get().setProcessed(false);
         return reportRepository.findById(reportId).get();
+    }
+
+    /**
+     * Выдает фото отчета по id.
+     *
+     * @return SendMessage
+     */
+    public ResponseEntity<byte[]> getPhotoReportById(Long reportId) throws IOException {
+        logger.debug("Вызван метод getPhotoReportById");
+        String filePath = "src/main/resources/reports/" + reportRepository.findById(reportId).get().getPhotoId();
+        byte[] result = Files.readAllBytes(Path.of(filePath));
+        HttpHeaders photo = new HttpHeaders();
+        photo.setContentType(MediaType.IMAGE_JPEG);
+        photo.setContentLength(result.length);
+
+        return ResponseEntity.status(HttpStatus.OK).headers(photo).body(result);
     }
 
     /**

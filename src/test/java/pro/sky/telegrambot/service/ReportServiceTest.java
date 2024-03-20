@@ -1,16 +1,19 @@
 package pro.sky.telegrambot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.Chat;
-import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.model.PhotoSize;
-import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.*;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.GetFileResponse;
+import org.aspectj.util.FileUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import pro.sky.telegrambot.entity.Adoptions;
 import pro.sky.telegrambot.entity.Customers;
 import pro.sky.telegrambot.entity.Report;
@@ -18,11 +21,16 @@ import pro.sky.telegrambot.repository.AdoptionsRepository;
 import pro.sky.telegrambot.repository.CustomersRepository;
 import pro.sky.telegrambot.repository.ReportRepository;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.isNotNull;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,6 +43,11 @@ public class ReportServiceTest {
     Chat chat;
     @Mock
     PhotoSize photoSize;
+    @Mock
+    GetFileResponse getFileResponse;
+    @Mock
+    File file;
+
 
     @Mock
     ReportRepository reportRepository;
@@ -67,7 +80,7 @@ public class ReportServiceTest {
     }
 
     @Test
-    public void saveReportTest_success() {
+    public void saveReportTest_success() throws IOException {
         PhotoSize[] photo = new PhotoSize[]{photoSize};
 
         Long chatId = 1L;
@@ -78,6 +91,14 @@ public class ReportServiceTest {
         when(update.message().chat().id()).thenReturn(chatId);
         when(update.message().caption()).thenReturn("Отчет");
         when(update.message().photo()).thenReturn(photo);
+
+        when(photoSize.width()).thenReturn(1);
+        when(photoSize.height()).thenReturn(1);
+        when(photoSize.fileId()).thenReturn("");
+        doReturn(getFileResponse).when(telegramBot).execute(isNotNull());
+        doReturn(file).when(getFileResponse).file();
+        doReturn("").when(file).filePath();
+        doReturn("https://api.telegram.org/file/bot6884906901:AAEEzXsPXSLA8LfhnFz70F5XW5cJyZoaGkE/photos/file_0.jpg").when(telegramBot).getFullFilePath(file);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse("2014-04-08 21:00", formatter);
@@ -94,6 +115,7 @@ public class ReportServiceTest {
         //test execution
         String actual = reportService.saveReport(update).getParameters().toString();
         assertEquals(expected, actual);
+        FileUtil.deleteContents(new java.io.File("src/main/resources/reports/null"));
     }
 
     @Test
@@ -108,6 +130,32 @@ public class ReportServiceTest {
         //test execution
         Report actual = reportService.getReportById(1L);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getPhotoReportByIdTest_success() throws IOException {
+        Long id = 1L;
+        String filePath = "src/main/resources/reports/Test.jpg";
+
+        java.io.File photoFile = new java.io.File(filePath);
+        photoFile.createNewFile();
+        Path path = Path.of(filePath);
+
+        byte[] result = Files.readAllBytes(path);
+        HttpHeaders photo = new HttpHeaders();
+        photo.setContentType(MediaType.IMAGE_JPEG);
+        photo.setContentLength(result.length);
+        ResponseEntity<byte[]> expected = ResponseEntity.status(HttpStatus.OK).headers(photo).body(result);
+
+        Report report = new Report(1L, "textTest", "Test.jpg");
+
+        when(reportRepository.findById(id)).thenReturn(Optional.of(report));
+
+
+        //test execution
+        ResponseEntity<byte[]> actual = reportService.getPhotoReportById(id);
+        assertEquals(expected, actual);
+        photoFile.delete();
     }
 
     @Test

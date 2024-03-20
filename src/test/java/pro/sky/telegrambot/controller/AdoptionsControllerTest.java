@@ -11,8 +11,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import pro.sky.telegrambot.entity.Adoptions;
 
+import pro.sky.telegrambot.entity.Customers;
+import pro.sky.telegrambot.entity.Pets;
 import pro.sky.telegrambot.repository.AdoptionsRepository;
-
+import pro.sky.telegrambot.repository.CustomersRepository;
+import pro.sky.telegrambot.repository.PetsRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,6 +32,10 @@ public class AdoptionsControllerTest {
     @Autowired
     AdoptionsRepository adoptionsRepository;
     @Autowired
+    CustomersRepository customersRepository;
+    @Autowired
+    PetsRepository petsRepository;
+    @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
@@ -43,8 +50,13 @@ public class AdoptionsControllerTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String dataTime = "2014-04-08 21:00";
         LocalDateTime trialEnd = LocalDateTime.parse(dataTime, formatter);
-        Long customerId = 1L;
-        Long petId = 1L;
+        Customers customers = new Customers(1L, "", "");
+
+        customersRepository.save(customers);
+        Pets pets = new Pets();
+        petsRepository.save(pets);
+        Long customerId = customers.getId();
+        Long petId = pets.getId();
         Adoptions adoptions = new Adoptions(customerId,petId,trialEnd);
 
         ResponseEntity<Adoptions> expected = ResponseEntity.ok(adoptions);
@@ -53,6 +65,8 @@ public class AdoptionsControllerTest {
         org.junit.jupiter.api.Assertions.assertNotNull(actual);
         org.junit.jupiter.api.Assertions.assertEquals(expected, actual);
         adoptionsRepository.delete(adoptions);
+        customersRepository.delete(customers);
+        petsRepository.delete(pets);
     }
 
     @Test

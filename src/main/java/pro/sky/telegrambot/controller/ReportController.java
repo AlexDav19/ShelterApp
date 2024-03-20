@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import pro.sky.telegrambot.entity.Report;
 import pro.sky.telegrambot.service.ReportService;
 
+import java.io.IOException;
 import java.util.Collection;
 
 @RequestMapping("report")
@@ -46,6 +47,26 @@ public class ReportController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(report);
+    }
+
+    @Operation(summary = "Поиск фотографии отчета по id.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Фото найдено",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Report.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Фото не найдено",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Report.class))
+                    )
+            }, tags = "Отчет")
+    @GetMapping("photo/{reportId}")
+    public ResponseEntity<byte[]> getPhotoReportById(@Parameter(description = "id отчета", example = "1") @PathVariable Long reportId) throws IOException {
+        return reportService.getPhotoReportById(reportId);
     }
 
     @Operation(summary = "Поиск новых отчетов",
