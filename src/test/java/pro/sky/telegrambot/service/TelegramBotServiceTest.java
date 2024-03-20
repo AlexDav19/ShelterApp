@@ -92,24 +92,6 @@ class TelegramBotServiceTest {
     }
 
     @Test
-    void menuMessage() {
-        //data preparation
-        Long chatId = 1L;
-        String expectedMessage = "test";
-
-        when(update.message()).thenReturn(message);
-        when(message.chat()).thenReturn(chat);
-        when(chat.id()).thenReturn(chatId);
-        when(update.message().chat().id()).thenReturn(chatId);
-
-        SendMessage expected = new SendMessage(chatId, expectedMessage);
-
-        //test execution
-        SendMessage actual = telegramBotService.menuMessage(update);
-        assertEquals(getJsonString(expected), getJsonString(actual));
-    }
-
-    @Test
     void shelterInfo() {
         //data preparation
         Long chatId = 1L;

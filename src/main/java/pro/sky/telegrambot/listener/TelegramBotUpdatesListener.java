@@ -118,9 +118,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     telegramBot.execute(infoService.getRulesForMeetingAnimals(update));
                 }
 
-                if (update.message().text().equals("/getRequiredDocuments")) {
-                    infoService.getRequiredDocuments(update);
-                }
+            if (update.message().text().equals("/getRequiredDocuments")) {
+                telegramBot.execute(infoService.getRequiredDocuments(update));
+            }
 
                 if (update.message().text().equals("/getInfoTransportationOfAnimals")) {
                     telegramBot.execute(infoService.getInfoTransportationOfAnimals(update));
