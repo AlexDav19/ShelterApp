@@ -36,6 +36,14 @@ public class ReportControllerTest {
     }
 
     @Test
+    void getPhotoReportByIdTest_success() {
+        Assertions
+                .assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/report/photo/" + 0L
+                        , Report.class))
+                .isNotNull();
+    }
+
+    @Test
     public void getNewReportTest_success(){
         Assertions
                 .assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/report", Collection.class))

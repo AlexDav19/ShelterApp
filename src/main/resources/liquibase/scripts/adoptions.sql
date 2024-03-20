@@ -15,13 +15,13 @@ CREATE TABLE adoptions
 ALTER TABLE adoptions
 ADD CONSTRAINT addiction_customer_id FOREIGN KEY (customer_id)
 REFERENCES customers (id)
-ON DELETE SET NULL
-ON UPDATE Set NULL;
+ON DELETE CASCADE
+ON UPDATE CASCADE;
 
 -- changeset davletov:2
 ALTER TABLE adoptions
 ADD CONSTRAINT addiction_pet_id FOREIGN KEY (pet_id)
 REFERENCES pets (id)
-ON DELETE SET NULL
-ON UPDATE Set NULL;
+ON DELETE CASCADE
+ON UPDATE CASCADE;
 
