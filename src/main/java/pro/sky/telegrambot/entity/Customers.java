@@ -28,6 +28,10 @@ public class Customers {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getChatId() {
         return chatId;
     }
@@ -40,9 +44,6 @@ public class Customers {
         return phone;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public boolean equals(Object o) {
