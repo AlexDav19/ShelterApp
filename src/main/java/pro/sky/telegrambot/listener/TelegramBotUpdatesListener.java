@@ -17,6 +17,7 @@ import pro.sky.telegrambot.service.ReportService;
 import pro.sky.telegrambot.service.TelegramBotService;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,7 +60,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 //Проверка: отправляется фото и усыновитель есть в базе
                 if (update.message().photo() != null && adoptionsRepository.findByCustomerId(customersRepository.findByChatId(update.message().chat().id()).getId()).getId() != null) {
                     if (update.message().caption() != null) {
-                        telegramBot.execute(reportService.saveReport(update));
+                        try {
+                            telegramBot.execute(reportService.saveReport(update));
+                        } catch (IOException e) {
+                            telegramBot.execute(reportService.reportSaveError(update));
+                        }
+
                     }else telegramBot.execute(new SendMessage(update.message().chat().id(), "В сообщении не хватает текста отчета. Добавьте, пожалуйста, текст отчета в подпись к фотографии"));
                     return;
                 }
