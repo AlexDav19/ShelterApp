@@ -74,9 +74,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     telegramBot.execute(telegramBotService.startMessage(update));
                 }
 
-                if (update.message().text().equals("/help")) {
-                    telegramBot.execute(telegramBotService.menuMessage(update));
-                }
 
                 if (update.message().text().equals("/how_to_adopt")) {
                     telegramBot.execute(infoService.getHowToAdopt(update));

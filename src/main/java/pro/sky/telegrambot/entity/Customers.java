@@ -44,9 +44,6 @@ public class Customers {
         return phone;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public boolean equals(Object o) {
