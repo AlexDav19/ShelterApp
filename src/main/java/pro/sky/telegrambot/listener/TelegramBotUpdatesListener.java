@@ -93,14 +93,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     telegramBot.execute(telegramBotService.addVolunteer(update));
                 }
 
-                if (update.message().text().equals("/getSchedule")) {
-                    telegramBot.execute(telegramBotService.getSchedule(update));
-                }
-
-                if (update.message().text().equals("/getSecurityContactDetails")) {
-                    telegramBot.execute(telegramBotService.getSecurityContactDetails(update));
-                }
-
                 if (update.message().text().contains("/leaveContactDetails")) {
                     telegramBot.execute(telegramBotService.saveCustomerDetails(update));
                 }

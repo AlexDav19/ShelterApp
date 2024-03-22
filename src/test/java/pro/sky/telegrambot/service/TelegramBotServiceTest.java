@@ -131,7 +131,8 @@ class TelegramBotServiceTest {
         Long chatId = 1L;
         String expectedMessage = "Адрес: address1\n" +
                 "Часы работы: working hours1\n" +
-                "Телефон: phone main1";
+                "Телефон: phone main1\n" +
+                "Телефон охраны: phone security1";
 
         Optional<Shelters> shelter = Optional.of(new Shelters("address1","working hours1","driving directions1","phone main1","phone security1"));
         shelter.get().setId(1L);
@@ -241,48 +242,6 @@ class TelegramBotServiceTest {
         //test execution
         SendMessage actualSendMessage = telegramBotService.addVolunteer(update);
         assertEquals(getJsonString(expectedSendMessage), getJsonString(actualSendMessage));
-    }
-
-    @Test
-    void getSchedule() {
-        //data preparation
-        Long chatId = 1L;
-        File expectedFile = new File("src/main/resources/map/Schema.jpg");
-
-        SendPhoto expectedSendPhoto = new SendPhoto(chatId,expectedFile);
-
-        when(update.message()).thenReturn(message);
-        when(message.chat()).thenReturn(chat);
-        when(chat.id()).thenReturn(chatId);
-        when(update.message().chat().id()).thenReturn(chatId);
-
-        Shelters expectedShelter = new Shelters("address1","working hours1","driving directions1","phone main1","phone security1");
-        when(sheltersRepository.findById(anyLong())).thenReturn(Optional.of(expectedShelter));
-
-        //test execution
-        SendPhoto actualSendPhoto = telegramBotService.getSchedule(update);
-        assertEquals(getJsonString(expectedSendPhoto), getJsonString(actualSendPhoto));
-    }
-
-    @Test
-    void getSecurityContactDetails() {
-        //data preparation
-        Long chatId = 1L;
-        File expectedFile = new File("src/main/resources/map/Schema.jpg");
-
-        SendPhoto expectedSendPhoto = new SendPhoto(chatId,expectedFile);
-
-        when(update.message()).thenReturn(message);
-        when(message.chat()).thenReturn(chat);
-        when(chat.id()).thenReturn(chatId);
-        when(update.message().chat().id()).thenReturn(chatId);
-
-        Shelters expectedShelter = new Shelters("address1","working hours1","driving directions1","phone main1","phone security1");
-        when(sheltersRepository.findById(anyLong())).thenReturn(Optional.of(expectedShelter));
-
-        //test execution
-        SendPhoto actualSendPhoto = telegramBotService.getSecurityContactDetails(update);
-        assertEquals(getJsonString(expectedSendPhoto), getJsonString(actualSendPhoto));
     }
 
     @Test
