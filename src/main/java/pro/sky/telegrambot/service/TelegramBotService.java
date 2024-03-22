@@ -94,7 +94,8 @@ public class TelegramBotService {
             if (shelter.isPresent()) {
                 msg = "Адрес: " + shelter.get().getAddress() + "\n"
                         + "Часы работы: " + shelter.get().getWorkingHours() + "\n"
-                        + "Телефон: " + shelter.get().getPhoneMain();
+                        + "Телефон: " + shelter.get().getPhoneMain() + "\n"
+                        + "Телефон охраны: " + shelter.get().getPhoneSecurity();
                 SendPhoto schema = new SendPhoto(update.message().chat().id(), new File(shelter.get().getDrivingDirections()));
                 telegramBot.execute(schema);
             } else {
@@ -143,38 +144,6 @@ public class TelegramBotService {
         } else {
             return new SendMessage(update.message().chat().id(), "Чтобы быть волонтером, необходимо добавить userName в Ваш профиль или изменить его на другой.");
         }
-    }
-
-    /**
-     * Отправка сообщения с информацией о графике и адресе.
-     *
-     * @return SendPhoto
-     */
-    public SendPhoto getSchedule(Update update) {
-        Long shelterId = 1L;
-        SendMessage message = new SendMessage(update.message().chat().id(),
-                "Наш приют находится по адресу:\n" +
-                        sheltersRepository.findById(shelterId).get().getAddress() +
-                        "\n" + sheltersRepository.findById(shelterId).get().getWorkingHours());
-        telegramBot.execute(message);
-        return new SendPhoto(update.message().chat().id(), new File("src/main/resources/map/Schema.jpg"));
-    }
-
-    /**
-     * Отправка контактных данных охраны для оформления пропуска на машину
-     *
-     * @return SendPhoto
-     */
-    public SendPhoto getSecurityContactDetails(Update update) {
-        Long shelterId = 1L;
-        SendMessage message = new SendMessage(update.message().chat().id(),
-                "Телефон охраны для оформления пропуска:\n" +
-                        sheltersRepository.findById(shelterId).get().getPhoneSecurity() + "\n" +
-                        "Адрес приюта:\n" +
-                        sheltersRepository.findById(shelterId).get().getAddress() + "\n" +
-                        sheltersRepository.findById(shelterId).get().getWorkingHours());
-        telegramBot.execute(message);
-        return new SendPhoto(update.message().chat().id(), new File("src/main/resources/map/Schema.jpg"));
     }
 
     /**
